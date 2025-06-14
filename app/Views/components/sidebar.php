@@ -20,7 +20,15 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">EXAMPLES</li>
+                <li class="nav-header">MASTER DATA</li>
+                <li class="nav-item">
+                    <a href="/master-data/gaya-renang" class="nav-link">
+                        <i class="nav-icon fas fa-swimmer"></i>
+                        <p>
+                            Gaya Renang
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

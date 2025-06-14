@@ -18,6 +18,16 @@
     <link rel="stylesheet" href="/assets/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="/assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+    <!-- additional style -->
+    <?= $this->renderSection('style'); ?>
+
+    <script>
+        const baseUrl = 'http://localhost:8080/'
+        let modeModal = '';
+        let url = '';
+        let method = '';
+    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -48,6 +58,9 @@
     <script src="/assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/assets/js/adminlte.js"></script>
+
+    <!-- additional script -->
+    <?= $this->renderSection('script'); ?>
 </body>
 
 </html>
