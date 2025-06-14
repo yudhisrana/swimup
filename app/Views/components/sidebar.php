@@ -29,6 +29,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/master-data/kategori-umur" class="nav-link">
+                        <i class="nav-icon fas fa-swimmer"></i>
+                        <p>
+                            Kategori Umur
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
