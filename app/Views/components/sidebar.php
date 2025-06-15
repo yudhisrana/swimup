@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-info elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
         <img src="/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
@@ -13,7 +13,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="/dashboard" class="nav-link active">
+                    <a href="/dashboard" class="nav-link <?= $page == 'dashboard' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -22,7 +22,7 @@
                 </li>
                 <li class="nav-header">MASTER DATA</li>
                 <li class="nav-item">
-                    <a href="/master-data/gaya-renang" class="nav-link">
+                    <a href="/master-data/gaya-renang" class="nav-link <?= $page == 'gaya-renang' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-swimmer"></i>
                         <p>
                             Gaya Renang

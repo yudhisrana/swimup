@@ -29,7 +29,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h3 class="card-title"><?= $table_name ?></h3>
-                                <a href="/master-data/gaya-renang/create" type="button" class="btn btn-primary">
+                                <a href="/master-data/gaya-renang/create" type="button" class="btn btn-info">
                                     <i class="fas fa-plus mr-1"></i>
                                     Tambah Data
                                 </a>

@@ -18,7 +18,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h3 class="card-title"><?= $form_name; ?></h3>
-                                <a href="/master-data/gaya-renang" type="button" class="btn btn-danger">
+                                <a href="/master-data/gaya-renang" type="button" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left mr-1"></i>
                                     Kembali
                                 </a>
@@ -36,7 +36,7 @@
                                     </span>
                                 </div>
                                 <div>
-                                    <button type="submit" id="submitModal" class="btn btn-primary">Simpan</button>
+                                    <button type="submit" id="submitModal" class="btn btn-info">Simpan</button>
                                 </div>
                             </form>
                         </div>

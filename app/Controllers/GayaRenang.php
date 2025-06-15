@@ -22,6 +22,7 @@ class GayaRenang extends BaseController
         $dataGayaRenang = $this->gayaRenangService->getData();
         $gayaRenang = $dataGayaRenang['success'] ? $dataGayaRenang['data'] : [];
         $data = [
+            'page'        => 'gaya-renang',
             'title'       => 'SwimUp - Gaya Renang',
             'table_name'  => 'Data Gaya Renang',
             'gaya_renang' => $gayaRenang,
@@ -32,6 +33,7 @@ class GayaRenang extends BaseController
     public function create()
     {
         $data = [
+            'page'        => 'gaya-renang',
             'title'       => 'SwimUp - Gaya Renang',
             'form_name'   => 'Form tambah data gaya renang'
         ];
@@ -64,6 +66,7 @@ class GayaRenang extends BaseController
             return redirect()->to('/master-data/gaya-renang')->with('error', $result['message']);
         }
         $data = [
+            'page'        => 'gaya-renang',
             'title'       => 'SwimUp - Gaya Renang',
             'form_name'   => 'Form edit data gaya renang',
             'gaya_renang' => $result['data'],
