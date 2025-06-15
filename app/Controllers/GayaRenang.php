@@ -5,19 +5,16 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Services\GayaRenang as ServicesGayaRenang;
 use App\Validation\GayaRenang as ValidationGayaRenang;
-use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 class GayaRenang extends BaseController
 {
     protected $gayaRenangService;
     protected $ruleValidation;
-    protected $validation;
     public function __construct()
     {
         $this->gayaRenangService = new ServicesGayaRenang;
         $this->ruleValidation = new ValidationGayaRenang;
-        $this->validation = Services::validation();
     }
 
     public function index()
@@ -29,19 +26,23 @@ class GayaRenang extends BaseController
             'table_name'  => 'Data Gaya Renang',
             'gaya_renang' => $gayaRenang,
         ];
-        return view('gaya-renang', $data);
+        return view('gaya-renang/index', $data);
+    }
+
+    public function create()
+    {
+        $data = [
+            'title'       => 'SwimUp - Gaya Renang',
+            'form_name'   => 'Form tambah data gaya renang'
+        ];
+        return view('gaya-renang/create', $data);
     }
 
     public function store()
     {
         $rules = $this->ruleValidation->ruleStore();
         if (!$this->validate($rules)) {
-            return $this->response
-                ->setStatusCode(422)
-                ->setJSON([
-                    'success' => false,
-                    'errors'  => $this->validation->getErrors()
-                ]);
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
         $data = [
@@ -50,26 +51,31 @@ class GayaRenang extends BaseController
 
         $result = $this->gayaRenangService->creteData($data);
         if (!$result['success']) {
-            return $this->response
-                ->setStatusCode($result['code'])
-                ->setJSON($result);
+            return redirect()->back()->withInput()->with('error', $result['message']);
         }
 
-        return $this->response
-            ->setStatusCode($result['code'])
-            ->setJSON($result);
+        return redirect()->to('/master-data/gaya-renang')->with('success', $result['message']);
+    }
+
+    public function edit($id)
+    {
+        $result = $this->gayaRenangService->getById($id);
+        if (!$result['success']) {
+            return redirect()->to('/master-data/gaya-renang')->with('error', $result['message']);
+        }
+        $data = [
+            'title'       => 'SwimUp - Gaya Renang',
+            'form_name'   => 'Form edit data gaya renang',
+            'gaya_renang' => $result['data'],
+        ];
+        return view('gaya-renang/edit', $data);
     }
 
     public function update($id)
     {
         $rules = $this->ruleValidation->ruleUpdate($id);
         if (!$this->validate($rules)) {
-            return $this->response
-                ->setStatusCode(422)
-                ->setJSON([
-                    'success' => false,
-                    'errors'  => $this->validation->getErrors()
-                ]);
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
         $data = [
@@ -78,14 +84,10 @@ class GayaRenang extends BaseController
 
         $result = $this->gayaRenangService->updateData($id, $data);
         if (!$result['success']) {
-            return $this->response
-                ->setStatusCode($result['code'])
-                ->setJSON($result);
+            return redirect()->back()->withInput()->with('error', $result['message']);
         }
 
-        return $this->response
-            ->setStatusCode($result['code'])
-            ->setJSON($result);
+        return redirect()->to('/master-data/gaya-renang')->with('success', $result['message']);
     }
 
     public function destroy($id)

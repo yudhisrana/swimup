@@ -15,7 +15,9 @@ $routes->get('/dashboard', [Dashboard::class, 'index']);
 
 // gaya renang
 $routes->get('/master-data/gaya-renang', [GayaRenang::class, 'index']);
-$routes->post('/master-data/gaya-renang/create', [GayaRenang::class, 'store']);
+$routes->get('/master-data/gaya-renang/create', [GayaRenang::class, 'create']);
+$routes->post('/master-data/gaya-renang/store', [GayaRenang::class, 'store']);
+$routes->get('/master-data/gaya-renang/edit/(:num)', [GayaRenang::class, 'edit']);
 $routes->post('/master-data/gaya-renang/update/(:num)', [GayaRenang::class, 'update']);
 $routes->post('/master-data/gaya-renang/delete/(:num)', [GayaRenang::class, 'destroy']);
 

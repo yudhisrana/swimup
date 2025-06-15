@@ -21,13 +21,6 @@
 
     <!-- additional style -->
     <?= $this->renderSection('style'); ?>
-
-    <script>
-        const baseUrl = 'http://localhost:8080/'
-        let modeModal = '';
-        let url = '';
-        let method = '';
-    </script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

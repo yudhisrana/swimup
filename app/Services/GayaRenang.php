@@ -15,7 +15,7 @@ class GayaRenang
     public function getData()
     {
         try {
-            $data = $this->gayaRenangModel->findAllData();
+            $data = $this->gayaRenangModel->findAll();
             if (empty($data)) {
                 return [
                     'success' => true,
@@ -36,6 +36,33 @@ class GayaRenang
         }
     }
 
+    public function getById($id)
+    {
+        try {
+            $data = $this->gayaRenangModel->where('id', $id)->first();
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Gagal menyimpan data gaya renang',
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+                'data'    => [],
+            ];
+        }
+    }
+
     public function creteData($data)
     {
         $newData = [
@@ -43,23 +70,21 @@ class GayaRenang
         ];
 
         try {
-            if (!$this->gayaRenangModel->saveData($newData)) {
+            if (!$this->gayaRenangModel->insert($newData)) {
                 return [
                     'success' => false,
-                    'code'    => 500,
                     'message' => 'Gagal menyimpan data gaya renang'
                 ];
             }
 
             return [
                 'success' => true,
-                'code'    => 201,
                 'message' => 'Berhasil menyimpan data gaya renang'
             ];
         } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
             return [
                 'success' => false,
-                'code'    => 500,
                 'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
             ];
         }
@@ -67,11 +92,10 @@ class GayaRenang
 
     public function updateData($id, $data)
     {
-        $existing = $this->gayaRenangModel->findById($id);
+        $existing = $this->gayaRenangModel->where('id', $id)->first();
         if (!$existing) {
             return [
                 'success' => false,
-                'code'    => 404,
                 'message' => 'Data tidak ditemukan'
             ];
         }
@@ -82,23 +106,21 @@ class GayaRenang
         ];
 
         try {
-            if (!$this->gayaRenangModel->updateData($id, $newData)) {
+            if (!$this->gayaRenangModel->update($id, $newData)) {
                 return [
                     'success' => false,
-                    'code'    => 500,
                     'message' => 'Gagal update data gaya renang'
                 ];
             }
 
             return [
                 'success' => true,
-                'code'    => 200,
                 'message' => 'Berhasil update data gaya renang'
             ];
         } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
             return [
                 'success' => false,
-                'code'    => 500,
                 'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
             ];
         }
@@ -106,7 +128,7 @@ class GayaRenang
 
     public function deleteData($id)
     {
-        $existing = $this->gayaRenangModel->findById($id);
+        $existing = $this->gayaRenangModel->where('id', $id);
         if (!$existing) {
             return [
                 'success' => false,
@@ -116,7 +138,7 @@ class GayaRenang
         }
 
         try {
-            if (!$this->gayaRenangModel->deleteData($id)) {
+            if (!$this->gayaRenangModel->delete($id)) {
                 return [
                     'success' => false,
                     'code'    => 500,
