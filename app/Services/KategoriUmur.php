@@ -15,7 +15,7 @@ class KategoriUmur
     public function getData()
     {
         try {
-            $data = $this->kategoriUmurModel->findAllData();
+            $data = $this->kategoriUmurModel->findAll();
             if (empty($data)) {
                 return [
                     'success' => true,
@@ -36,6 +36,33 @@ class KategoriUmur
         }
     }
 
+    public function getById($id)
+    {
+        try {
+            $data = $this->kategoriUmurModel->where('id', $id)->first();
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Data ditemukan',
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+                'data'    => [],
+            ];
+        }
+    }
+
     public function creteData($data)
     {
         $newData = [
@@ -43,23 +70,21 @@ class KategoriUmur
         ];
 
         try {
-            if (!$this->kategoriUmurModel->saveData($newData)) {
+            if (!$this->kategoriUmurModel->insert($newData)) {
                 return [
                     'success' => false,
-                    'code'    => 500,
                     'message' => 'Gagal menyimpan data kategori umur'
                 ];
             }
 
             return [
                 'success' => true,
-                'code'    => 201,
                 'message' => 'Berhasil menyimpan data kategori umur'
             ];
         } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
             return [
                 'success' => false,
-                'code'    => 500,
                 'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
             ];
         }
@@ -67,11 +92,10 @@ class KategoriUmur
 
     public function updateData($id, $data)
     {
-        $existing = $this->kategoriUmurModel->findById($id);
+        $existing = $this->kategoriUmurModel->where('id', $id)->first();
         if (!$existing) {
             return [
                 'success' => false,
-                'code'    => 404,
                 'message' => 'Data tidak ditemukan'
             ];
         }
@@ -82,23 +106,21 @@ class KategoriUmur
         ];
 
         try {
-            if (!$this->kategoriUmurModel->updateData($id, $newData)) {
+            if (!$this->kategoriUmurModel->update($id, $newData)) {
                 return [
                     'success' => false,
-                    'code'    => 500,
-                    'message' => 'Gagal update data gaya renang'
+                    'message' => 'Gagal update data kategori umur',
                 ];
             }
 
             return [
                 'success' => true,
-                'code'    => 200,
-                'message' => 'Berhasil update data gaya renang'
+                'message' => 'Berhasil update data kategori umur',
             ];
         } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
             return [
                 'success' => false,
-                'code'    => 500,
                 'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
             ];
         }
@@ -106,7 +128,7 @@ class KategoriUmur
 
     public function deleteData($id)
     {
-        $existing = $this->kategoriUmurModel->findById($id);
+        $existing = $this->kategoriUmurModel->where('id', $id);
         if (!$existing) {
             return [
                 'success' => false,
@@ -116,20 +138,21 @@ class KategoriUmur
         }
 
         try {
-            if (!$this->kategoriUmurModel->deleteData($id)) {
+            if (!$this->kategoriUmurModel->delete($id)) {
                 return [
                     'success' => false,
                     'code'    => 500,
-                    'message' => 'Gagal hapus data gaya renang'
+                    'message' => 'Gagal hapus data kategori umur'
                 ];
             }
 
             return [
                 'success' => true,
                 'code'    => 200,
-                'message' => 'Berhasil hapus data gaya renang'
+                'message' => 'Berhasil hapus data kategori umur'
             ];
         } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
             return [
                 'success' => false,
                 'code'    => 500,

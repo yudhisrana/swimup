@@ -29,13 +29,12 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h3 class="card-title"><?= $table_name ?></h3>
-                                <button type="button" id="btnModalTambah" class="btn btn-primary">
+                                <a href="/master-data/kategori-umur/create" type="button" class="btn btn-info">
                                     <i class="fas fa-plus mr-1"></i>
                                     Tambah Data
-                                </button>
+                                </a>
                             </div>
                         </div>
-                        <!-- /.card-header -->
                         <div class="card-body">
                             <table
                                 id="tableKategoriUmur"
@@ -43,7 +42,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Kategori Umur</th>
+                                        <th>Kategori Umur</th>
                                         <th>Tanggal Dibuat</th>
                                         <th>Tanggal Diupdate</th>
                                         <th>Aksi</th>
@@ -54,15 +53,13 @@
                                         <tr>
                                             <td><?= $key + 1; ?></td>
                                             <td><?= $value->name; ?></td>
-                                            <td><?= $value->created_at ? date('d-m-Y H:i:s') : '-' ?></td>
-                                            <td><?= $value->updated_at ? date('d-m-Y H:i:s') : '-' ?></td>
+                                            <td><?= $value->created_at ? date('d-m-Y H:i:s', strtotime($value->created_at)) : '-' ?></td>
+                                            <td><?= $value->updated_at ? date('d-m-Y H:i:s', strtotime($value->updated_at)) : '-' ?></td>
                                             <td>
-                                                <button type="button" class="btn btn-warning btnModalEdit"
-                                                    data-id="<?= $value->id; ?>"
-                                                    data-kategori_umur="<?= $value->name; ?>">
+                                                <a href="<?= '/master-data/kategori-umur/edit/' . $value->id ?>" type="button" class="btn btn-warning">
                                                     <i class="nav-icon fas fa-edit"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-danger btnModalDelete"
+                                                </a>
+                                                <button type="button" class="btn btn-danger btn-delete"
                                                     data-id="<?= $value->id; ?>">
                                                     <i class="nav-icon fas fa-trash-alt"></i>
                                                 </button>
@@ -72,42 +69,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.card-body -->
                     </div>
-                    <!-- /.card -->
                 </div>
-                <!-- /.col -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- /.content -->
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="modalKategoriUmur" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modalKategoriUmurLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalKategoriUmurLabel">Modal title</h5>
-            </div>
-            <div class="modal-body">
-                <form id="formKategoriUmur">
-                    <?= csrf_field(); ?>
-                    <div class="form-group">
-                        <label for="kategori_umur">Nama Kategori Umur</label>
-                        <input type="text" class="form-control" id="kategori_umur" name="kategori_umur" placeholder="Masukan nama gaya">
-                        <span id="kategori_umur-error" class="error invalid-feedback" style="display: none;"></span>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center">
-                        <button type="button" id="cancelModal" class="btn btn-danger mr-2" data-dismiss="modal">Batal</button>
-                        <button type="submit" id="submitModal" class="btn btn-primary">-</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 </div>
 <?= $this->endSection(); ?>
 
@@ -121,10 +87,6 @@
 <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
 <script>
-    // csrf token
-    let csrfToken = "<?= csrf_token(); ?>"
-    let csrfHash = "<?= csrf_hash(); ?>"
-
     $(function() {
         $("#tableKategoriUmur")
             .DataTable({
@@ -160,81 +122,13 @@
             })
     });
 
+    // sweet alert delete
     $(function() {
-        // function reset
-        function reset() {
-            $('#formKategoriUmur')[0].reset();
-            $('#kategori_umur').removeClass('is-invalid');
-            $('#kategori_umur-error').text('').hide();
-        }
+        $('.btn-delete').click(function() {
+            const baseUrl = '<?= base_url(); ?>'
+            const csrfToken = '<?= csrf_token(); ?>'
+            const csrfHash = '<?= csrf_hash(); ?>'
 
-        // modal tambah
-        $('#btnModalTambah').click(function() {
-            modeModal = 'tambah';
-            url = baseUrl + 'master-data/kategori-umur/create';
-            method = 'POST';
-
-            $('#modalKategoriUmurLabel').text('Tambah Data');
-            $('#submitModal').text('Simpan');
-            $('#modalKategoriUmur').modal('show');
-        });
-
-        // modal edit
-        $('.btnModalEdit').click(function() {
-            const id = $(this).data('id')
-            const kategoriUmur = $(this).data('kategori_umur')
-            modeModal = 'edit';
-            url = baseUrl + 'master-data/kategori-umur/update/' + id;
-            method = 'POST';
-
-            $('#modalKategoriUmurLabel').text('Edit Data');
-            $('#submitModal').text('Update');
-            $('#kategori_umur').val(kategoriUmur)
-            $('#modalKategoriUmur').modal('show');
-        });
-
-        // tambah dan update
-        $('#formKategoriUmur').submit(function(e) {
-            e.preventDefault();
-            const kategoriUmur = $('#kategori_umur').val();
-
-            $.ajax({
-                url: url,
-                method: method,
-                data: {
-                    [csrfToken]: csrfHash,
-                    kategori_umur: kategoriUmur,
-                },
-                success: function(res) {
-                    if (res.success) {
-                        Swal.fire({
-                            title: "Sukses",
-                            text: res.message,
-                            icon: "success"
-                        }).then(() => {
-                            location.reload();
-                        });
-                    }
-                },
-                error: function(xhr) {
-                    if (xhr.status === 422) {
-                        const errMsg = xhr.responseJSON.errors;
-                        $('#kategori_umur').addClass('is-invalid');
-                        $('#kategori_umur-error').text(errMsg.kategori_umur).show();
-                    } else {
-                        const errMsg = xhr.responseJSON.message;
-                        Swal.fire({
-                            title: 'Opsss..',
-                            text: errMsg,
-                            icon: "error"
-                        })
-                    }
-                }
-            })
-        });
-
-        // modal delete
-        $('.btnModalDelete').click(function() {
             const id = $(this).data('id')
             url = baseUrl + 'master-data/kategori-umur/delete/' + id;
             method = 'POST';
@@ -279,19 +173,26 @@
                 }
             });
         });
-
-        // focus input saat modal ditampilkan
-        $('#modalKategoriUmur').on('shown.bs.modal', function() {
-            if (modeModal === 'tambah') {
-                $('#kategori_umur').trigger('focus');
-            }
-        });
-
-        // reset batal
-        $('#cancelModal').click(function() {
-            document.activeElement.blur();
-            reset();
-        });
     });
 </script>
+
+<?php if (session()->getFlashdata('success')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: '<?= session()->getFlashdata('success') ?>'
+        });
+    </script>
+<?php } ?>
+
+<?php if (session()->getFlashdata('error')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Opss..',
+            text: '<?= session()->getFlashdata('error') ?>'
+        });
+    </script>
+<?php } ?>
 <?= $this->endSection(); ?>

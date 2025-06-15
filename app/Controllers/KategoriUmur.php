@@ -6,18 +6,15 @@ use App\Controllers\BaseController;
 use App\Services\KategoriUmur as ServicesKategoriUmur;
 use App\Validation\KategoriUmur as ValidationKategoriUmur;
 use CodeIgniter\HTTP\ResponseInterface;
-use Config\Services;
 
 class KategoriUmur extends BaseController
 {
     protected $kategoriUmurService;
     protected $ruleValidation;
-    protected $validation;
     public function __construct()
     {
         $this->kategoriUmurService = new ServicesKategoriUmur;
         $this->ruleValidation = new ValidationKategoriUmur;
-        $this->validation = Services::validation();
     }
 
     public function index()
@@ -26,23 +23,28 @@ class KategoriUmur extends BaseController
         $kategoriUmur = $dataKategoriUmur['success'] ? $dataKategoriUmur['data'] : [];
         $data = [
             'page'          => 'kategori-umur',
-            'title'         => 'SwimUp - KategoriUmur',
+            'title'         => 'SwimUp - Kategori Umur',
             'table_name'    => 'Data Kategori Umur',
             'kategori_umur' => $kategoriUmur,
         ];
-        return view('kategori-umur', $data);
+        return view('kategori-umur/index', $data);
+    }
+
+    public function create()
+    {
+        $data = [
+            'page'        => 'kategori-umur',
+            'title'       => 'SwimUp - Kategori Umur',
+            'form_name'   => 'Form tambah data kategori umur'
+        ];
+        return view('kategori-umur/create', $data);
     }
 
     public function store()
     {
         $rules = $this->ruleValidation->ruleStore();
         if (!$this->validate($rules)) {
-            return $this->response
-                ->setStatusCode(422)
-                ->setJSON([
-                    'success' => false,
-                    'errors'  => $this->validation->getErrors()
-                ]);
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
         $data = [
@@ -51,26 +53,32 @@ class KategoriUmur extends BaseController
 
         $result = $this->kategoriUmurService->creteData($data);
         if (!$result['success']) {
-            return $this->response
-                ->setStatusCode($result['code'])
-                ->setJSON($result);
+            return redirect()->back()->withInput()->with('error', $result['message']);
         }
 
-        return $this->response
-            ->setStatusCode($result['code'])
-            ->setJSON($result);
+        return redirect()->to('/master-data/kategori-umur')->with('success', $result['message']);
+    }
+
+    public function edit($id)
+    {
+        $result = $this->kategoriUmurService->getById($id);
+        if (!$result['success']) {
+            return redirect()->to('/master-data/kategori-umur')->with('error', $result['message']);
+        }
+        $data = [
+            'page'          => 'kategori-umur',
+            'title'         => 'SwimUp - Kategori Umur',
+            'form_name'     => 'Form tambah data kategori umur',
+            'kategori_umur' => $result['data'],
+        ];
+        return view('kategori-umur/edit', $data);
     }
 
     public function update($id)
     {
         $rules = $this->ruleValidation->ruleUpdate($id);
         if (!$this->validate($rules)) {
-            return $this->response
-                ->setStatusCode(422)
-                ->setJSON([
-                    'success' => false,
-                    'errors'  => $this->validation->getErrors()
-                ]);
+            return redirect()->back()->withInput()->with('validation', $this->validator);
         }
 
         $data = [
@@ -79,14 +87,10 @@ class KategoriUmur extends BaseController
 
         $result = $this->kategoriUmurService->updateData($id, $data);
         if (!$result['success']) {
-            return $this->response
-                ->setStatusCode($result['code'])
-                ->setJSON($result);
+            return redirect()->back()->withInput()->with('error', $result['message']);
         }
 
-        return $this->response
-            ->setStatusCode($result['code'])
-            ->setJSON($result);
+        return redirect()->to('/master-data/kategori-umur')->with('success', $result['message']);
     }
 
     public function destroy($id)

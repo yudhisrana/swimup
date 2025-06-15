@@ -50,7 +50,7 @@ class GayaRenang
 
             return [
                 'success' => true,
-                'message' => 'Gagal menyimpan data gaya renang',
+                'message' => 'Data ditemukan',
                 'data'    => $data,
             ];
         } catch (\Throwable $th) {

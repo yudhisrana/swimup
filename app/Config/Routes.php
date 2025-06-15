@@ -23,6 +23,8 @@ $routes->post('/master-data/gaya-renang/delete/(:num)', [GayaRenang::class, 'des
 
 // kategori umur
 $routes->get('/master-data/kategori-umur', [KategoriUmur::class, 'index']);
-$routes->post('/master-data/kategori-umur/create', [KategoriUmur::class, 'store']);
+$routes->get('/master-data/kategori-umur/create', [KategoriUmur::class, 'create']);
+$routes->post('/master-data/kategori-umur/store', [KategoriUmur::class, 'store']);
+$routes->get('/master-data/kategori-umur/edit/(:num)', [KategoriUmur::class, 'edit']);
 $routes->post('/master-data/kategori-umur/update/(:num)', [KategoriUmur::class, 'update']);
 $routes->post('/master-data/kategori-umur/delete/(:num)', [KategoriUmur::class, 'destroy']);
