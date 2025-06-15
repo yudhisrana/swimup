@@ -25,8 +25,9 @@ class KategoriUmur extends BaseController
         $dataKategoriUmur = $this->kategoriUmurService->getData();
         $kategoriUmur = $dataKategoriUmur['success'] ? $dataKategoriUmur['data'] : [];
         $data = [
-            'title'       => 'SwimUp - KategoriUmur',
-            'table_name'  => 'Data Kategori Umur',
+            'page'          => 'kategori-umur',
+            'title'         => 'SwimUp - KategoriUmur',
+            'table_name'    => 'Data Kategori Umur',
             'kategori_umur' => $kategoriUmur,
         ];
         return view('kategori-umur', $data);

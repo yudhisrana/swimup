@@ -30,8 +30,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/master-data/kategori-umur" class="nav-link">
-                        <i class="nav-icon fas fa-swimmer"></i>
+                    <a href="/master-data/kategori-umur" class="nav-link <?= $page == 'kategori-umur' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-child"></i>
                         <p>
                             Kategori Umur
                         </p>
