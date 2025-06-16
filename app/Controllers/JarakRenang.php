@@ -51,7 +51,7 @@ class JarakRenang extends BaseController
             'name' => $this->request->getPost('jarak_renang'),
         ];
 
-        $result = $this->jarakRenangService->creteData($data);
+        $result = $this->jarakRenangService->createData($data);
         if (!$result['success']) {
             return redirect()->back()->withInput()->with('error', $result['message']);
         }

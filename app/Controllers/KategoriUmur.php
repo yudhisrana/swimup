@@ -51,7 +51,7 @@ class KategoriUmur extends BaseController
             'name' => $this->request->getPost('kategori_umur'),
         ];
 
-        $result = $this->kategoriUmurService->creteData($data);
+        $result = $this->kategoriUmurService->createData($data);
         if (!$result['success']) {
             return redirect()->back()->withInput()->with('error', $result['message']);
         }

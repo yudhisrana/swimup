@@ -51,7 +51,7 @@ class GayaRenang extends BaseController
             'name' => $this->request->getPost('gaya_renang'),
         ];
 
-        $result = $this->gayaRenangService->creteData($data);
+        $result = $this->gayaRenangService->createData($data);
         if (!$result['success']) {
             return redirect()->back()->withInput()->with('error', $result['message']);
         }

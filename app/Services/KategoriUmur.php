@@ -63,7 +63,7 @@ class KategoriUmur
         }
     }
 
-    public function creteData($data)
+    public function createData($data)
     {
         $newData = [
             'name' => ucwords(strtolower($data['name'])),
