@@ -13,8 +13,8 @@ class GayaRenang extends BaseController
     protected $ruleValidation;
     public function __construct()
     {
-        $this->gayaRenangService = new ServicesGayaRenang;
-        $this->ruleValidation = new ValidationGayaRenang;
+        $this->gayaRenangService = new ServicesGayaRenang();
+        $this->ruleValidation = new ValidationGayaRenang();
     }
 
     public function index()

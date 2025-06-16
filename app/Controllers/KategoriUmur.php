@@ -13,8 +13,8 @@ class KategoriUmur extends BaseController
     protected $ruleValidation;
     public function __construct()
     {
-        $this->kategoriUmurService = new ServicesKategoriUmur;
-        $this->ruleValidation = new ValidationKategoriUmur;
+        $this->kategoriUmurService = new ServicesKategoriUmur();
+        $this->ruleValidation = new ValidationKategoriUmur();
     }
 
     public function index()

@@ -22,6 +22,14 @@
                 </li>
                 <li class="nav-header">MASTER DATA</li>
                 <li class="nav-item">
+                    <a href="/master-data/kategori-umur" class="nav-link <?= $page == 'kategori-umur' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-child"></i>
+                        <p>
+                            Kategori Umur
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="/master-data/gaya-renang" class="nav-link <?= $page == 'gaya-renang' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-swimmer"></i>
                         <p>
@@ -30,10 +38,10 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="/master-data/kategori-umur" class="nav-link <?= $page == 'kategori-umur' ? 'active' : '' ?>">
-                        <i class="nav-icon fas fa-child"></i>
+                    <a href="/master-data/jarak-renang" class="nav-link <?= $page == 'jarak-renang' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-random"></i>
                         <p>
-                            Kategori Umur
+                            Jarak Renang
                         </p>
                     </a>
                 </li>

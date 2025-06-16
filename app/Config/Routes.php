@@ -2,6 +2,7 @@
 
 use App\Controllers\Dashboard;
 use App\Controllers\GayaRenang;
+use App\Controllers\JarakRenang;
 use App\Controllers\KategoriUmur;
 use CodeIgniter\Router\RouteCollection;
 
@@ -28,3 +29,11 @@ $routes->post('/master-data/kategori-umur/store', [KategoriUmur::class, 'store']
 $routes->get('/master-data/kategori-umur/edit/(:num)', [KategoriUmur::class, 'edit']);
 $routes->post('/master-data/kategori-umur/update/(:num)', [KategoriUmur::class, 'update']);
 $routes->post('/master-data/kategori-umur/delete/(:num)', [KategoriUmur::class, 'destroy']);
+
+// jarak renang
+$routes->get('/master-data/jarak-renang', [JarakRenang::class, 'index']);
+$routes->get('/master-data/jarak-renang/create', [JarakRenang::class, 'create']);
+$routes->post('/master-data/jarak-renang/store', [JarakRenang::class, 'store']);
+$routes->get('/master-data/jarak-renang/edit/(:num)', [JarakRenang::class, 'edit']);
+$routes->post('/master-data/jarak-renang/update/(:num)', [JarakRenang::class, 'update']);
+$routes->post('/master-data/jarak-renang/delete/(:num)', [JarakRenang::class, 'destroy']);
