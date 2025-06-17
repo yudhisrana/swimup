@@ -29,15 +29,15 @@ class Event extends BaseController
         return view('event/index', $data);
     }
 
-    // public function create()
-    // {
-    //     $data = [
-    //         'page'        => 'user',
-    //         'title'       => 'SwimUp - User',
-    //         'form_name'   => 'Form tambah data User'
-    //     ];
-    //     return view('user/create', $data);
-    // }
+    public function create()
+    {
+        $data = [
+            'page'        => 'event',
+            'title'       => 'SwimUp - Event',
+            'form_name'   => 'Form edit data event'
+        ];
+        return view('user/create', $data);
+    }
 
     // public function store()
     // {
