@@ -53,9 +53,10 @@ class CreateEventTable extends Migration
                 'null'       => false,
             ],
             'status' => [
-                'type'       => 'BOOLEAN',
+                'type'       => 'ENUM',
+                'constraint' => ['Berjalan', 'Selesai', 'Gagal'],
                 'null'       => false,
-                'default'    => true,
+                'default'    => 'Berjalan',
             ],
             'created_by' => [
                 'type'       => 'CHAR',
