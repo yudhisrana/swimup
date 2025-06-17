@@ -2,20 +2,105 @@
 
 namespace App\Services;
 
+use App\Helpers\GenerateSlug;
 use App\Models\Event as ModelsEvent;
+use App\Models\GayaRenang;
+use App\Models\JarakRenang;
+use App\Models\KategoriUmur;
+use Ramsey\Uuid\Uuid;
 
 class Event
 {
     protected $eventModel;
+    protected $kategoriUmurModel;
+    protected $gayaRenangModel;
+    protected $jarakRenangModel;
+    protected $slug;
     public function __construct()
     {
         $this->eventModel = new ModelsEvent();
+        $this->kategoriUmurModel = new KategoriUmur();
+        $this->gayaRenangModel = new GayaRenang();
+        $this->jarakRenangModel = new JarakRenang();
+        $this->slug = new GenerateSlug();
     }
 
     public function getData()
     {
         try {
             $data = $this->eventModel->findAllDataWithRelation();
+            if (empty($data)) {
+                return [
+                    'success' => true,
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getDataKategoriUmur()
+    {
+        try {
+            $data = $this->kategoriUmurModel->findAll();
+            if (empty($data)) {
+                return [
+                    'success' => true,
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getDataGayaRenang()
+    {
+        try {
+            $data = $this->gayaRenangModel->findAll();
+            if (empty($data)) {
+                return [
+                    'success' => true,
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getDataJarakRenang()
+    {
+        try {
+            $data = $this->jarakRenangModel->findAll();
             if (empty($data)) {
                 return [
                     'success' => true,
@@ -66,25 +151,24 @@ class Event
     // public function createData($data)
     // {
     //     $id = Uuid::uuid4()->toString();
-    //     $hasPassword = password_hash($data['password'], PASSWORD_DEFAULT);
+    //     $slug = $this->slug->generateSlug($data['event_name']);
 
     //     $newData = [
     //         'id'       => $id,
-    //         'name'     => ucwords(strtolower($data['name'])),
-    //         'username' => $data['username'],
-    //         'password' => $hasPassword,
-    //         'email'    => $data['email'],
-    //         'phone'    => $data['phone'],
-    //         'address'  => $data['address'],
-    //         'image'    => $data['image'],
-    //         'role_id'  => $data['role'],
+    //         'name'     => $data['event_name'],
+    //         'slug' => $slug,
+    //         'kategori_umur_id'    => $data['kategori_umur'],
+    //         'gaya_renang_id'    => $data['gaya_renang'],
+    //         'jarak_renang_id'  => $data['jarak_renang'],
+    //         'max_participant'    => $data['jumlah_peserta'],
+    //         'event_date'  => $data['tanggal_event'],
+    //         'description' => $data['deskripsi'],
+    //         'status' => 'Berjalan',
+    //         'created_by' => 
     //     ];
 
     //     try {
-    //         if (!$this->userModel->insert($newData)) {
-    //             if ($data['image'] !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $data['image'])) {
-    //                 unlink(FCPATH . 'assets/img/user/' . $data['image']);
-    //             }
+    //         if (!$this->eventModel->insert($newData)) {
     //             return [
     //                 'success' => false,
     //                 'message' => 'Gagal menyimpan data user'

@@ -5,6 +5,8 @@
 <link
     rel="stylesheet"
     href="/assets/plugins/sweetalert2/sweetalert2.min.css" />
+<!-- Tempusdominus Bootstrap 4 -->
+<link rel="stylesheet" href="/assets/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 <?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
@@ -25,76 +27,82 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <?php $validation = session()->getFlashdata('validation') ?: [] ?>
-                            <form action="/menu/event/store" method="post" enctype="multipart/form-data">
+                            <?php $validation = session()->getFlashdata('validation') ?>
+                            <form action="/menu/event/store" method="post">
                                 <?= csrf_field(); ?>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="name">Nama Lengkap</label>
-                                        <input type="text" class="form-control <?= array_key_exists('name', $validation) ? 'is-invalid' : '' ?>" id="name" name="name" placeholder="Nama lengkap" value="<?= old('name') ?>">
-                                        <span id="name-error" class="error invalid-feedback">
-                                            <?= $validation['name'] ?? '' ?>
+                                        <label for="event_name">Nama Event</label>
+                                        <input type="text" class="form-control <?= $validation && $validation->hasError('event_name') ? 'is-invalid' : '' ?>" id="event_name" name="event_name" placeholder="Nama Event" value="<?= old('event_name') ?>">
+                                        <span id="event_name-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('event_name') : '' ?>
                                         </span>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="role">Role</label>
-                                        <select name="role" id="role" class="form-control <?= array_key_exists('role', $validation) ? 'is-invalid' : '' ?>">
-                                            <option value="" selected disabled>Pilih Role</option>
-                                            <option value="2" <?= old('role') == '2' ? 'selected' : '' ?>>Admin</option>
-                                            <option value="3" <?= old('role') == '3' ? 'selected' : '' ?>>Panitia</option>
+                                        <label for="kategori_umur">Kategori Umur</label>
+                                        <select name="kategori_umur" id="kategori_umur" class="form-control <?= $validation && $validation->hasError('kategori_umur') ? 'is-invalid' : '' ?>">
+                                            <option value="" selected disabled>Pilih Kategori Umur</option>
+                                            <?php foreach ($kategori_umur as $kategoriUmur) { ?>
+                                                <option value="<?= $kategoriUmur->id ?>"><?= $kategoriUmur->name ?></option>
+                                            <?php } ?>
                                         </select>
-                                        <span id="role-error" class="error invalid-feedback">
-                                            <?= $validation['role'] ?? '' ?>
+                                        <span id="kategori_umur-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('kategori_umur') : '' ?>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="username">Username</label>
-                                        <input type="text" class="form-control <?= array_key_exists('username', $validation) ? 'is-invalid' : '' ?>" id="username" name="username" placeholder="Username" value="<?= old('username') ?>">
-                                        <span id="username-error" class="error invalid-feedback">
-                                            <?= $validation['username'] ?? '' ?>
+                                        <label for="gaya_renang">Gaya Renang</label>
+                                        <select name="gaya_renang" id="gaya_renang" class="form-control <?= $validation && $validation->hasError('gaya_renang') ? 'is-invalid' : '' ?>">
+                                            <option value="" selected disabled>Pilih Gaya Renang</option>
+                                            <?php foreach ($gaya_renang as $gayaRenang) { ?>
+                                                <option value="<?= $gayaRenang->id ?>"><?= $gayaRenang->name ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <span id="gaya_renang-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('gaya_renang') : '' ?>
                                         </span>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="password">Password</label>
-                                        <input type="password" class="form-control <?= array_key_exists('password', $validation) ? 'is-invalid' : '' ?>" id="password" name="password" placeholder="******" value="<?= old('password') ?>">
-                                        <span id="password-error" class="error invalid-feedback">
-                                            <?= $validation['password'] ?? '' ?>
+                                        <label for="jarak_renang">Jarak Renang</label>
+                                        <select name="jarak_renang" id="jarak_renang" class="form-control <?= $validation && $validation->hasError('jarak_renang') ? 'is-invalid' : '' ?>">
+                                            <option value="" selected disabled>Pilih Jarak Renang</option>
+                                            <?php foreach ($jarak_renang as $jarakRenang) { ?>
+                                                <option value="<?= $jarakRenang->id ?>"><?= $jarakRenang->name ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <span id="jarak_renang-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('jarak_renang') : '' ?>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="email">Email</label>
-                                        <input type="text" class="form-control <?= array_key_exists('email', $validation) ? 'is-invalid' : '' ?>" id="email" name="email" placeholder="user@email.com" value="<?= old('email') ?>">
-                                        <span id="email-error" class="error invalid-feedback">
-                                            <?= $validation['email'] ?? '' ?>
+                                        <label for="jumlah_peserta">Jumlah Peserta</label>
+                                        <input type="text" class="form-control <?= $validation && $validation->hasError('jumlah_peserta') ? 'is-invalid' : '' ?>" id="jumlah_peserta" name="jumlah_peserta" placeholder="50" value="<?= old('jumlah_peserta') ?>">
+                                        <span id="jumlah_peserta-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('jumlah_peserta') : '' ?>
                                         </span>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="phone">No Tlp</label>
-                                        <input type="text" class="form-control <?= array_key_exists('phone', $validation) ? 'is-invalid' : '' ?>" id="phone" name="phone" placeholder="08123456789" value="<?= old('phone') ?>">
-                                        <span id="phone-error" class="error invalid-feedback">
-                                            <?= $validation['phone'] ?? '' ?>
+                                        <label for="tanggal_event">Tanggal Event</label>
+                                        <div class="input-group date" id="tanggal_event" data-target-input="nearest">
+                                            <input type="text" class="form-control datetimepicker-input <?= $validation && $validation->hasError('tanggal_event') ? 'is-invalid' : '' ?>" data-target="#tanggal_event" name="tanggal_event" placeholder="06/17/2025 00:00 AM" />
+                                            <div class="input-group-append" data-target="#tanggal_event" data-toggle="datetimepicker">
+                                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                            </div>
+                                        </div>
+                                        <span id="tanggal_event-error" class="error invalid-feedback">
+                                            <?= $validation ? $validation->getErrors('tanggal_event') : '' ?>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="address">Alamat</label>
-                                    <textarea name="address" id="address" rows="3" class="form-control <?= array_key_exists('address', $validation) ? 'is-invalid' : '' ?>"><?= trim(old('address')) ?></textarea>
-                                    <span id="address-error" class="error invalid-feedback">
-                                        <?= $validation['address'] ?? '' ?>
-                                    </span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="image">Pilih Gambar</label>
-                                    <div class="custom-file">
-                                        <label class="custom-file-label" for="image">Pilih Gambar</label>
-                                        <input type="file" class="custom-file-input <?= array_key_exists('image', $validation) ? 'is-invalid' : '' ?>" id="image" name="image" onchange="imgPreview()">
-                                    </div>
-                                    <span id="image-error" class="error invalid-feedback">
-                                        <?= $validation['image'] ?? '' ?>
+                                    <label for="deskripsi">Deskripsi Event</label>
+                                    <textarea name="deskripsi" id="deskripsi" rows="3" class="form-control <?= $validation && $validation->hasError ? 'is-invalid' : '' ?>"></textarea>
+                                    <span id="deskripsi-error" class="error invalid-feedback">
+                                        <?= $validation ? $validation->getErrors('deskripsi') : '' ?>
                                     </span>
                                 </div>
                                 <div>
@@ -113,6 +121,10 @@
 <?= $this->section('script'); ?>
 <!-- SweetAlert2 -->
 <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- InputMask -->
+<script src="/assets/plugins/moment/moment.min.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <script>
     function imgPreview() {
@@ -122,6 +134,13 @@
         const file = image.files[0];
         file ? label.text(file.name) : label.text('Pilih Gambar');
     }
+
+    //Date and time picker
+    $('#tanggal_event').datetimepicker({
+        icons: {
+            time: 'far fa-clock'
+        }
+    });
 </script>
 
 <?php if (session()->getFlashdata('error')) { ?>
