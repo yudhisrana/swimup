@@ -1,5 +1,12 @@
 <?= $this->extend('layout/default'); ?>
 
+<?= $this->section('style'); ?>
+<!-- SweetAlert2 -->
+<link
+    rel="stylesheet"
+    href="/assets/plugins/sweetalert2/sweetalert2.min.css" />
+<?= $this->endSection(); ?>
+
 <?= $this->section('content'); ?>
 <div class="content-wrapper">
     <!-- Main content -->
@@ -80,4 +87,19 @@
     </section>
     <!-- /.content -->
 </div>
+<?= $this->endSection(); ?>
+
+<?= $this->section('script'); ?>
+<!-- SweetAlert2 -->
+<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+<?php if (session()->getFlashdata('success')) { ?>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Sukses',
+            text: '<?= session()->getFlashdata('success') ?>'
+        });
+    </script>
+<?php } ?>
 <?= $this->endSection(); ?>
