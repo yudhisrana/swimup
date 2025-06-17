@@ -7,6 +7,7 @@ use App\Helpers\GenerateSlug;
 use App\Services\Event as ServicesEvent;
 use App\Validation\Event as ValidationEvent;
 use CodeIgniter\HTTP\ResponseInterface;
+use DateTime;
 
 class Event extends BaseController
 {
@@ -31,6 +32,37 @@ class Event extends BaseController
         return view('event/index', $data);
     }
 
+    public function show($id)
+    {
+        $result = $this->eventService->getById($id);
+        if (!$result['success']) {
+            return redirect()->back()->with('error', $result['message']);
+        }
+
+        $dataEvent = $result['data'];
+        $creator = $this->eventService->getUserById($dataEvent->created_by);
+
+        if (!empty($dataEvent->updated_by)) {
+            $editor = $this->eventService->getUserById($dataEvent->updated_by);
+        } else {
+            $editor = [
+                'data' => [
+                    'name' => '',
+                ],
+            ];
+        }
+
+        $data = [
+            'page'          => 'event',
+            'title'         => 'SwimUp - Event',
+            'card_name'     => 'Data Event',
+            'event'         => $result['data'],
+            'creator'       => $creator['data'],
+            'editor'        => $editor['data']
+        ];
+        return view('event/view', $data);
+    }
+
     public function create()
     {
         $dataKategoriUmur = $this->eventService->getDataKategoriUmur();
@@ -53,91 +85,99 @@ class Event extends BaseController
         return view('event/create', $data);
     }
 
-    // public function store()
-    // {
-    //     $rules = $this->ruleValidation->ruleStore();
-    //     if (!$this->validate($rules)) {
-    //         return redirect()->back()->withInput()->with('validation', $this->validator);
-    //     }
+    public function store()
+    {
+        $rules = $this->ruleValidation->ruleStore();
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
 
-    //     $data = [
-    //         'event_name'     => $this->request->getPost('event_name'),
-    //         'kategori_umur'  => $this->request->getPost('kategori_umur'),
-    //         'gaya_renang'    => $this->request->getPost('gaya_renang'),
-    //         'jarak_renang'   => $this->request->getPost('jarak_renang'),
-    //         'jumlah_peserta' => $this->request->getPost('jumlah_peserta'),
-    //         'tanggal_event'  => $this->request->getPost('tanggal_event'),
-    //         'deskripsi'      => $this->request->getPost('deskripsi'),
-    //     ];
+        $date = DateTime::createFromFormat('m/d/Y h:i A', $this->request->getPost('tanggal_event'));
+        $evenDate = $date ? $date->format('Y-m-d H:i:s') : null;
 
-    //     $result = $this->eventService->createData($data);
-    //     if (!$result['success']) {
-    //         return redirect()->back()->withInput()->with('error', $result['message']);
-    //     }
+        $data = [
+            'event_name'     => $this->request->getPost('event_name'),
+            'kategori_umur'  => $this->request->getPost('kategori_umur'),
+            'gaya_renang'    => $this->request->getPost('gaya_renang'),
+            'jarak_renang'   => $this->request->getPost('jarak_renang'),
+            'jumlah_peserta' => $this->request->getPost('jumlah_peserta'),
+            'tanggal_event'  => $evenDate,
+            'deskripsi'      => $this->request->getPost('deskripsi'),
+        ];
 
-    //     return redirect()->to('/setting/user')->with('success', $result['message']);
-    // }
+        $result = $this->eventService->createData($data);
+        if (!$result['success']) {
+            return redirect()->back()->withInput()->with('error', $result['message']);
+        }
 
-    // public function edit($id)
-    // {
-    //     $result = $this->userService->getById($id);
-    //     if (!$result['success']) {
-    //         return redirect()->to('/setting/user')->with('error', $result['message']);
-    //     }
-    //     $data = [
-    //         'page'      => 'user',
-    //         'title'     => 'SwimUp - User',
-    //         'form_name' => 'Form tambah data User',
-    //         'user'      => $result['data'],
-    //     ];
-    //     return view('user/edit', $data);
-    // }
+        return redirect()->to('/menu/event')->with('success', $result['message']);
+    }
 
-    // public function update($id)
-    // {
-    //     $rules = $this->ruleValidation->ruleUpdate($id);
-    //     if (!$this->validate($rules)) {
-    //         return redirect()->back()->withInput()->with('validation', $this->validator->getErrors());
-    //     }
+    public function edit($id)
+    {
+        $result = $this->eventService->getById($id);
+        if (!$result['success']) {
+            return redirect()->back()->with('error', $result['message']);
+        }
 
-    //     $imageName = 'default-profile.png';
-    //     $dataImage = $this->request->getFile('image');
-    //     if (!empty($dataImage) && $dataImage->isValid()) {
-    //         $imageName = $dataImage->getRandomName();
-    //         $dataImage->move(FCPATH . 'assets/img/user/', $imageName);
-    //     }
+        $dataKategoriUmur = $this->eventService->getDataKategoriUmur();
+        $kategoriUmur = $dataKategoriUmur['success'] ? $dataKategoriUmur['data'] : [];
 
-    //     $data = [
-    //         'name'     => $this->request->getPost('name'),
-    //         'role'     => $this->request->getPost('role'),
-    //         'username' => $this->request->getPost('username'),
-    //         'password' => $this->request->getPost('password'),
-    //         'email'    => $this->request->getPost('email'),
-    //         'phone'    => $this->request->getPost('phone'),
-    //         'address'  => $this->request->getPost('address'),
-    //         'old_img'  => $this->request->getPost('old-img'),
-    //         'image'    => $imageName,
-    //     ];
+        $dataGayaRenang = $this->eventService->getDataGayaRenang();
+        $gayaRenang = $dataGayaRenang['success'] ? $dataGayaRenang['data'] : [];
 
-    //     $result = $this->userService->updateData($id, $data);
-    //     if (!$result['success']) {
-    //         return redirect()->back()->withInput()->with('error', $result['message']);
-    //     }
+        $dataJarakRenang = $this->eventService->getDataJarakRenang();
+        $jarakRenang = $dataJarakRenang['success'] ? $dataJarakRenang['data'] : [];
 
-    //     return redirect()->to('/setting/user')->with('success', $result['message']);
-    // }
+        $data = [
+            'page'          => 'event',
+            'title'         => 'SwimUp - Event',
+            'form_name'     => 'Form edit data event',
+            'event'         => $result['data'],
+            'kategori_umur' => $kategoriUmur,
+            'gaya_renang'   => $gayaRenang,
+            'jarak_renang'  => $jarakRenang,
+        ];
+        return view('event/edit', $data);
+    }
 
-    // public function destroy($id)
-    // {
-    //     $result = $this->userService->deleteData($id);
-    //     if (!$result['success']) {
-    //         return $this->response
-    //             ->setStatusCode($result['code'])
-    //             ->setJSON($result);
-    //     }
+    public function update($id)
+    {
+        $rules = $this->ruleValidation->ruleUpdate($id);
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('validation', $this->validator);
+        }
 
-    //     return $this->response
-    //         ->setStatusCode($result['code'])
-    //         ->setJSON($result);
-    // }
+        $data = [
+            'event_name'     => $this->request->getPost('event_name'),
+            'kategori_umur'  => $this->request->getPost('kategori_umur'),
+            'gaya_renang'    => $this->request->getPost('gaya_renang'),
+            'jarak_renang'   => $this->request->getPost('jarak_renang'),
+            'jumlah_peserta' => $this->request->getPost('jumlah_peserta'),
+            'tanggal_event'  => $this->request->getPost('tanggal_event'),
+            'deskripsi'      => $this->request->getPost('deskripsi'),
+            'status'         => $this->request->getPost('status'),
+        ];
+
+        $result = $this->eventService->updateData($id, $data);
+        if (!$result['success']) {
+            return redirect()->back()->withInput()->with('error', $result['message']);
+        }
+
+        return redirect()->to('/menu/event')->with('success', $result['message']);
+    }
+
+    public function destroy($id)
+    {
+        $result = $this->eventService->deleteData($id);
+        if (!$result['success']) {
+            return $this->response
+                ->setStatusCode($result['code'])
+                ->setJSON($result);
+        }
+
+        return $this->response
+            ->setStatusCode($result['code'])
+            ->setJSON($result);
+    }
 }

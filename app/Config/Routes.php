@@ -56,6 +56,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
 
     // event
     $routes->get('/menu/event', [Event::class, 'index']);
+    $routes->get('/menu/event/show/(:hash)', [Event::class, 'show']);
     $routes->get('/menu/event/create', [Event::class, 'create']);
     $routes->post('/menu/event/store', [Event::class, 'store']);
     $routes->get('/menu/event/edit/(:hash)', [Event::class, 'edit']);

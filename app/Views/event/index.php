@@ -70,6 +70,9 @@
                                             <td><?= $value->created_at ? date('d-m-Y H:i:s', strtotime($value->created_at)) : '-' ?></td>
                                             <td><?= $value->updated_at ? date('d-m-Y H:i:s', strtotime($value->updated_at)) : '-' ?></td>
                                             <td>
+                                                <a href="<?= '/menu/event/show/' . $value->id ?>" type="button" class="btn btn-primary">
+                                                    <i class="nav-icon fas fa-eye"></i>
+                                                </a>
                                                 <a href="<?= '/menu/event/edit/' . $value->id ?>" type="button" class="btn btn-warning">
                                                     <i class="nav-icon fas fa-edit"></i>
                                                 </a>
@@ -200,25 +203,21 @@
             });
         });
     });
-</script>
 
-<?php if (session()->getFlashdata('success')) { ?>
-    <script>
+    <?php if (session()->getFlashdata('success')) { ?>
         Swal.fire({
             icon: 'success',
             title: 'Sukses',
             text: '<?= session()->getFlashdata('success') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
 
-<?php if (session()->getFlashdata('error')) { ?>
-    <script>
+    <?php if (session()->getFlashdata('error')) { ?>
         Swal.fire({
             icon: 'error',
             title: 'Opss..',
             text: '<?= session()->getFlashdata('error') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection(); ?>

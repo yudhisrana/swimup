@@ -7,10 +7,13 @@ use App\Models\Event as ModelsEvent;
 use App\Models\GayaRenang;
 use App\Models\JarakRenang;
 use App\Models\KategoriUmur;
+use App\Models\User;
+use DateTime;
 use Ramsey\Uuid\Uuid;
 
 class Event
 {
+    protected $userModel;
     protected $eventModel;
     protected $kategoriUmurModel;
     protected $gayaRenangModel;
@@ -18,6 +21,7 @@ class Event
     protected $slug;
     public function __construct()
     {
+        $this->userModel = new User();
         $this->eventModel = new ModelsEvent();
         $this->kategoriUmurModel = new KategoriUmur();
         $this->gayaRenangModel = new GayaRenang();
@@ -44,6 +48,33 @@ class Event
             log_message('error', $th->getMessage());
             return [
                 'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getUserById($id)
+    {
+        try {
+            $data = $this->userModel->where('id', $id)->first();
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Data ditemukan',
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
                 'data'    => [],
             ];
         }
@@ -121,165 +152,163 @@ class Event
         }
     }
 
-    // public function getById($id)
-    // {
-    //     try {
-    //         $data = $this->userModel->where('id', $id)->first();
-    //         if (!$data) {
-    //             return [
-    //                 'success' => false,
-    //                 'message' => 'Data tidak ditemukan',
-    //                 'data'    => [],
-    //             ];
-    //         }
+    public function getById($id)
+    {
+        try {
+            $data = $this->eventModel->findAllDataWithRelationById($id);
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                    'data'    => [],
+                ];
+            }
 
-    //         return [
-    //             'success' => true,
-    //             'message' => 'Data ditemukan',
-    //             'data'    => $data,
-    //         ];
-    //     } catch (\Throwable $th) {
-    //         log_message('error', $th->getMessage());
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
-    //             'data'    => [],
-    //         ];
-    //     }
-    // }
+            return [
+                'success' => true,
+                'message' => 'Data ditemukan',
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+                'data'    => [],
+            ];
+        }
+    }
 
-    // public function createData($data)
-    // {
-    //     $id = Uuid::uuid4()->toString();
-    //     $slug = $this->slug->generateSlug($data['event_name']);
+    public function createData($data)
+    {
+        $id = Uuid::uuid4()->toString();
+        $slug = $this->slug->generateSlug($data['event_name']);
 
-    //     $newData = [
-    //         'id'       => $id,
-    //         'name'     => $data['event_name'],
-    //         'slug' => $slug,
-    //         'kategori_umur_id'    => $data['kategori_umur'],
-    //         'gaya_renang_id'    => $data['gaya_renang'],
-    //         'jarak_renang_id'  => $data['jarak_renang'],
-    //         'max_participant'    => $data['jumlah_peserta'],
-    //         'event_date'  => $data['tanggal_event'],
-    //         'description' => $data['deskripsi'],
-    //         'status' => 'Berjalan',
-    //         'created_by' => 
-    //     ];
+        $newData = [
+            'id'               => $id,
+            'name'             => ucwords(strtolower($data['event_name'])),
+            'slug'             => $slug,
+            'kategori_umur_id' => $data['kategori_umur'],
+            'gaya_renang_id'   => $data['gaya_renang'],
+            'jarak_renang_id'  => $data['jarak_renang'],
+            'max_participant'  => $data['jumlah_peserta'],
+            'event_date'       => $data['tanggal_event'],
+            'description'      => $data['deskripsi'],
+            'status'           => 'Berjalan',
+            'created_by'       => session()->get('user_id'),
+        ];
 
-    //     try {
-    //         if (!$this->eventModel->insert($newData)) {
-    //             return [
-    //                 'success' => false,
-    //                 'message' => 'Gagal menyimpan data user'
-    //             ];
-    //         }
+        try {
+            if (!$this->eventModel->insert($newData)) {
+                return [
+                    'success' => false,
+                    'message' => 'Gagal menyimpan data event'
+                ];
+            }
 
-    //         return [
-    //             'success' => true,
-    //             'message' => 'Berhasil menyimpan data user'
-    //         ];
-    //     } catch (\Throwable $th) {
-    //         log_message('error', $th->getMessage());
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
-    //         ];
-    //     }
-    // }
+            return [
+                'success' => true,
+                'message' => 'Berhasil menyimpan data event'
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+            ];
+        }
+    }
 
-    // public function updateData($id, $data)
-    // {
-    //     $existing = $this->userModel->where('id', $id)->first();
-    //     if (!$existing) {
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Data tidak ditemukan'
-    //         ];
-    //     }
+    public function updateData($id, $data)
+    {
+        $existing = $this->eventModel->where('id', $id)->first();
+        if (!$existing) {
+            return [
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
 
-    //     $newData = [
-    //         'name'     => ucwords(strtolower($data['name'])),
-    //         'username' => $data['username'],
-    //         'email'    => $data['email'],
-    //         'phone'    => $data['phone'],
-    //         'address'  => $data['address'],
-    //         'image'    => $data['image'],
-    //         'role_id'  => $data['role'],
-    //         'updated_at' => date('Y-m-d H:i:s'),
-    //     ];
+        $newData = [
+            'name'             => ucwords(strtolower($data['event_name'])),
+            'kategori_umur_id' => $data['kategori_umur'],
+            'gaya_renang_id'   => $data['gaya_renang'],
+            'jarak_renang_id'  => $data['jarak_renang'],
+            'max_participant'  => $data['jumlah_peserta'],
+            'description'      => $data['deskripsi'],
+            'status'           => $data['status'],
+            'updated_by'       => session()->get('user_id'),
+            'updated_at'       => date('Y-m-d H:i:s'),
+        ];
 
-    //     if (!empty($data['password'])) {
-    //         $newData['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-    //     } else {
-    //         unset($newData['password']);
-    //     }
+        if ($existing->name != $data['event_name']) {
+            $slug = $this->slug->generateSlug($data['event_name']);
+            $newData['slug'] = $slug;
+        } else {
+            unset($newData['slug']);
+        }
 
-    //     try {
-    //         if (!$this->userModel->update($id, $newData)) {
-    //             if ($data['image'] !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $data['image'])) {
-    //                 unlink(FCPATH . 'assets/img/user/' . $data['image']);
-    //             }
-    //             return [
-    //                 'success' => false,
-    //                 'message' => 'Gagal update data user',
-    //             ];
-    //         }
+        $date = DateTime::createFromFormat('m/d/Y h:i A', $data['tanggal_event']);
+        $evenDate = $date ? $date->format('Y-m-d H:i:s') : null;
+        if ($evenDate != $existing->event_date) {
+            $newData['event_date'] = $evenDate;
+        } else {
+            unset($newData['event_date']);
+        }
 
-    //         if ($data['old_img'] !== 'default-profile.png') {
-    //             unlink(FCPATH . 'assets/img/user/' . $data['old_img']);
-    //         }
+        try {
+            if (!$this->eventModel->update($id, $newData)) {
+                return [
+                    'success' => false,
+                    'message' => 'Gagal update data user',
+                ];
+            }
 
-    //         return [
-    //             'success' => true,
-    //             'message' => 'Berhasil update data user',
-    //         ];
-    //     } catch (\Throwable $th) {
-    //         log_message('error', $th->getMessage());
-    //         return [
-    //             'success' => false,
-    //             'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
-    //         ];
-    //     }
-    // }
+            return [
+                'success' => true,
+                'message' => 'Berhasil update data user',
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+            ];
+        }
+    }
 
-    // public function deleteData($id)
-    // {
-    //     $existing = $this->userModel->where('id', $id)->first();
-    //     if (!$existing) {
-    //         return [
-    //             'success' => false,
-    //             'code'    => 404,
-    //             'message' => 'Data tidak ditemukan'
-    //         ];
-    //     }
+    public function deleteData($id)
+    {
+        $existing = $this->eventModel->where('id', $id)->first();
+        if (!$existing) {
+            return [
+                'success' => false,
+                'code'    => 404,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
 
-    //     try {
-    //         if (!$this->userModel->delete($id)) {
-    //             return [
-    //                 'success' => false,
-    //                 'code'    => 500,
-    //                 'message' => 'Gagal hapus data kategori umur'
-    //             ];
-    //         }
+        try {
+            if (!$this->eventModel->delete($id)) {
+                return [
+                    'success' => false,
+                    'code'    => 500,
+                    'message' => 'Gagal hapus data event'
+                ];
+            }
 
-    //         if ($existing->image !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $existing->image)) {
-    //             unlink(FCPATH . 'assets/img/user/' . $existing->image);
-    //         }
-
-
-    //         return [
-    //             'success' => true,
-    //             'code'    => 200,
-    //             'message' => 'Berhasil hapus data kategori umur'
-    //         ];
-    //     } catch (\Throwable $th) {
-    //         log_message('error', $th->getMessage());
-    //         return [
-    //             'success' => false,
-    //             'code'    => 500,
-    //             'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
-    //         ];
-    //     }
-    // }
+            return [
+                'success' => true,
+                'code'    => 200,
+                'message' => 'Berhasil hapus data event'
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'code'    => 500,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+            ];
+        }
+    }
 }
