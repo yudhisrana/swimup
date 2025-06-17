@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Helpers\GenerateSlug;
 use App\Services\Event as ServicesEvent;
 use App\Validation\Event as ValidationEvent;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -46,9 +45,9 @@ class Event extends BaseController
             $editor = $this->eventService->getUserById($dataEvent->updated_by);
         } else {
             $editor = [
-                'data' => [
-                    'name' => '',
-                ],
+                'data' => (object)[
+                    'name' => ''
+                ]
             ];
         }
 

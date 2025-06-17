@@ -24,7 +24,7 @@
 
                                 <dt class="col-sm-3">Link Event</dt>
                                 <dd class="col-sm-9">
-                                    : <a href="<?= base_url('event/' . $event->slug) ?>"><?= base_url('event/' . $event->slug) ?></a>
+                                    : <a href="<?= base_url('event/' . $event->slug) ?>" target="_blank"><?= base_url('event/' . $event->slug) ?></a>
                                 </dd>
 
                                 <dt class="col-sm-3">Kategori Umur</dt>
@@ -60,7 +60,7 @@
                                 <dd class="col-sm-9">: <?= esc($creator->name); ?></dd>
 
                                 <dt class="col-sm-3">Diupdate Oleh</dt>
-                                <dd class="col-sm-9">: <?= $editor['name'] ? esc($editor['name']) : '-'; ?></dd>
+                                <dd class="col-sm-9">: <?= $editor->name ? esc($editor->name) : '-'; ?></dd>
                             </dl>
                         </div>
                     </div>
