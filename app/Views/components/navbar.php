@@ -13,7 +13,12 @@
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                <img src="/assets/img/default-profile.png" class="img-circle elevation-2" alt="User Image" width="30" height="30">
+                <?php
+                $imagePath = ($user['image'] !== 'default-profile.png')
+                    ? 'assets/img/user/' . $user['image']
+                    : 'assets/img/' . $user['image'];
+                ?>
+                <img src="<?= base_url($imagePath) ?>" class="img-circle elevation-2" alt="User Image" width="30" height="30">
                 <span class="ml-2"><?= esc($user['name']); ?></span>
             </a>
             <div class="dropdown-menu dropdown-menu-right mt-1">

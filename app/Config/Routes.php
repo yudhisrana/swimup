@@ -21,7 +21,10 @@ $routes->post('/logout', [Auth::class, 'attemptLogout']);
 $routes->group('', ['filter' => 'auth'], function ($routes) {
     //  index
     $routes->get('/', function () {
-        return "Hello SwimUp";
+        if (!session()->get('logged_in')) {
+            return redirect()->to('/login');
+        }
+        return redirect()->to('/dashboard');
     });
 
     // dashboard
@@ -51,14 +54,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->post('/master-data/jarak-renang/update/(:num)', [JarakRenang::class, 'update']);
     $routes->post('/master-data/jarak-renang/delete/(:num)', [JarakRenang::class, 'destroy']);
 
-    // user
-    $routes->get('/setting/user', [User::class, 'index']);
-    $routes->get('/setting/user/create', [User::class, 'create']);
-    $routes->post('/setting/user/store', [User::class, 'store']);
-    $routes->get('/setting/user/edit/(:hash)', [User::class, 'edit']);
-    $routes->post('/setting/user/update/(:hash)', [User::class, 'update']);
-    $routes->post('/setting/user/delete/(:hash)', [User::class, 'destroy']);
-
     // event
     $routes->get('/menu/event', [Event::class, 'index']);
     $routes->get('/menu/event/create', [Event::class, 'create']);
@@ -66,4 +61,14 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->get('/menu/event/edit/(:hash)', [Event::class, 'edit']);
     $routes->post('/menu/event/update/(:hash)', [Event::class, 'update']);
     $routes->post('/menu/event/delete/(:hash)', [Event::class, 'destroy']);
+
+    $routes->group('', ['filter' => 'admin'], function ($routes) {
+        // user
+        $routes->get('/setting/user', [User::class, 'index']);
+        $routes->get('/setting/user/create', [User::class, 'create']);
+        $routes->post('/setting/user/store', [User::class, 'store']);
+        $routes->get('/setting/user/edit/(:hash)', [User::class, 'edit']);
+        $routes->post('/setting/user/update/(:hash)', [User::class, 'update']);
+        $routes->post('/setting/user/delete/(:hash)', [User::class, 'destroy']);
+    });
 });

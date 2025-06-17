@@ -40,6 +40,7 @@ class Auth
             'user_id'   => $existing->id,
             'name'      => $existing->name,
             'username'  => $existing->username,
+            'image'     => $existing->image,
             'role_id'   => $existing->role_id,
             'logged_in' => true,
         ]);
