@@ -93,13 +93,13 @@
 <!-- SweetAlert2 -->
 <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
-<?php if (session()->getFlashdata('success')) { ?>
-    <script>
+<script>
+    <?php if (session()->getFlashdata('success')) { ?>
         Swal.fire({
             icon: 'success',
             title: 'Sukses',
             text: '<?= session()->getFlashdata('success') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection(); ?>

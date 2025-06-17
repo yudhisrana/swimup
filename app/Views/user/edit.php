@@ -124,15 +124,13 @@
         const file = image.files[0];
         file ? label.text(file.name) : label.text('Pilih Gambar');
     }
-</script>
 
-<?php if (session()->getFlashdata('error')) { ?>
-    <script>
+    <?php if (session()->getFlashdata('error')) { ?>
         Swal.fire({
             icon: 'error',
             title: 'Opss..',
             text: '<?= session()->getFlashdata('error') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection(); ?>

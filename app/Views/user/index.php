@@ -233,25 +233,21 @@
             });
         });
     });
-</script>
 
-<?php if (session()->getFlashdata('success')) { ?>
-    <script>
+    <?php if (session()->getFlashdata('success')) { ?>
         Swal.fire({
             icon: 'success',
             title: 'Sukses',
             text: '<?= session()->getFlashdata('success') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
 
-<?php if (session()->getFlashdata('error')) { ?>
-    <script>
+    <?php if (session()->getFlashdata('error')) { ?>
         Swal.fire({
             icon: 'error',
             title: 'Opss..',
             text: '<?= session()->getFlashdata('error') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection(); ?>

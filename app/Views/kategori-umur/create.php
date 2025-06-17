@@ -52,13 +52,13 @@
 <!-- SweetAlert2 -->
 <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
-<?php if (session()->getFlashdata('error')) { ?>
-    <script>
+<script>
+    <?php if (session()->getFlashdata('error')) { ?>
         Swal.fire({
             icon: 'error',
             title: 'Opss..',
             text: '<?= session()->getFlashdata('error') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection(); ?>

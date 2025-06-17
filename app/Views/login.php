@@ -40,13 +40,13 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('script'); ?>
-<?php if (session()->getFlashdata('error')) { ?>
-    <script>
+<script>
+    <?php if (session()->getFlashdata('error')) { ?>
         Swal.fire({
             icon: 'error',
             title: 'Opss..',
             text: '<?= session()->getFlashdata('error') ?>'
         });
-    </script>
-<?php } ?>
+    <?php } ?>
+</script>
 <?= $this->endSection();
