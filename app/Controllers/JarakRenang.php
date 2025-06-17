@@ -68,7 +68,7 @@ class JarakRenang extends BaseController
         $data = [
             'page'         => 'jarak-renang',
             'title'        => 'SwimUp - Jarak Renang',
-            'form_name'    => 'Form tambah data jarak renang',
+            'form_name'    => 'Form edit data jarak renang',
             'jarak_renang' => $result['data'],
         ];
         return view('jarak-renang/edit', $data);

@@ -32,10 +32,13 @@ class User extends BaseController
 
     public function create()
     {
+        $dataRole = $this->userService->getDataRole();
+        $role = $dataRole['success'] ? $dataRole['data'] : [];
         $data = [
             'page'        => 'user',
             'title'       => 'SwimUp - User',
-            'form_name'   => 'Form tambah data User'
+            'form_name'   => 'Form tambah data User',
+            'roles'        => $role,
         ];
         return view('user/create', $data);
     }
@@ -79,10 +82,14 @@ class User extends BaseController
         if (!$result['success']) {
             return redirect()->to('/setting/user')->with('error', $result['message']);
         }
+
+        $dataRole = $this->userService->getDataRole();
+        $role = $dataRole['success'] ? $dataRole['data'] : [];
         $data = [
             'page'      => 'user',
             'title'     => 'SwimUp - User',
-            'form_name' => 'Form tambah data User',
+            'form_name' => 'Form edit data User',
+            'roles'      => $role,
             'user'      => $result['data'],
         ];
         return view('user/edit', $data);

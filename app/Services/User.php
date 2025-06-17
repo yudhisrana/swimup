@@ -2,21 +2,48 @@
 
 namespace App\Services;
 
+use App\Models\Role as ModelsRole;
 use App\Models\User as ModelsUser;
 use Ramsey\Uuid\Uuid;
 
 class User
 {
     protected $userModel;
+    protected $roleModel;
     public function __construct()
     {
         $this->userModel = new ModelsUser();
+        $this->roleModel = new ModelsRole();
     }
 
     public function getData()
     {
         try {
             $data = $this->userModel->findAllDataWithRelation();
+            if (empty($data)) {
+                return [
+                    'success' => true,
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getDataRole()
+    {
+        try {
+            $data = $this->roleModel->findAll();
             if (empty($data)) {
                 return [
                     'success' => true,

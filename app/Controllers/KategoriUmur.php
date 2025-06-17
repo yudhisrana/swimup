@@ -68,7 +68,7 @@ class KategoriUmur extends BaseController
         $data = [
             'page'          => 'kategori-umur',
             'title'         => 'SwimUp - Kategori Umur',
-            'form_name'     => 'Form tambah data kategori umur',
+            'form_name'     => 'Form edit data kategori umur',
             'kategori_umur' => $result['data'],
         ];
         return view('kategori-umur/edit', $data);

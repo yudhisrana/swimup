@@ -40,8 +40,9 @@
                                         <label for="role">Role</label>
                                         <select name="role" id="role" class="form-control <?= array_key_exists('role', $validation) ? 'is-invalid' : '' ?>">
                                             <option value="" selected disabled>Pilih Role</option>
-                                            <option value="2" <?= old('role') == '2' ? 'selected' : '' ?>>Admin</option>
-                                            <option value="3" <?= old('role') == '3' ? 'selected' : '' ?>>Panitia</option>
+                                            <?php foreach ($roles as $role) { ?>
+                                                <option value="<?= $role->id; ?>" <?= old('role') == $role->id ? 'selected' : '' ?>><?= $role->name; ?></option>
+                                            <?php } ?>
                                         </select>
                                         <span id="role-error" class="error invalid-feedback">
                                             <?= $validation['role'] ?? '' ?>
