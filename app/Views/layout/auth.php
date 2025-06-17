@@ -8,6 +8,7 @@
         <?= $title; ?>
     </title>
 
+    <link rel="icon" href="<?= base_url('assets/img/logo.png'); ?>" type="image/gif">
     <!-- Google Font: Source Sans Pro -->
     <link
         rel="stylesheet"
