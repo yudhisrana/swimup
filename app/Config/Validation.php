@@ -5,6 +5,7 @@ namespace Config;
 use App\Validation\GayaRenang;
 use App\Validation\JarakRenang;
 use App\Validation\KategoriUmur;
+use App\Validation\User;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
@@ -31,6 +32,7 @@ class Validation extends BaseConfig
         GayaRenang::class,
         KategoriUmur::class,
         JarakRenang::class,
+        User::class,
     ];
 
     /**

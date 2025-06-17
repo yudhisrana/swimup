@@ -20,11 +20,4 @@ class User extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = '';
     protected $deletedField  = '';
-
-    public function findDataWithRelation()
-    {
-        return $this->select('tbl_user.*, tbl_role.name')
-            ->join('tbl_role', 'id = tbl_user.role_id')
-            ->findAll();
-    }
 }

@@ -4,6 +4,7 @@ use App\Controllers\Dashboard;
 use App\Controllers\GayaRenang;
 use App\Controllers\JarakRenang;
 use App\Controllers\KategoriUmur;
+use App\Controllers\User;
 use CodeIgniter\Router\RouteCollection;
 
 /**
@@ -37,3 +38,11 @@ $routes->post('/master-data/jarak-renang/store', [JarakRenang::class, 'store']);
 $routes->get('/master-data/jarak-renang/edit/(:num)', [JarakRenang::class, 'edit']);
 $routes->post('/master-data/jarak-renang/update/(:num)', [JarakRenang::class, 'update']);
 $routes->post('/master-data/jarak-renang/delete/(:num)', [JarakRenang::class, 'destroy']);
+
+// user
+$routes->get('/setting/user', [User::class, 'index']);
+$routes->get('/setting/user/create', [User::class, 'create']);
+$routes->post('/setting/user/store', [User::class, 'store']);
+$routes->get('/setting/user/edit/(:hash)', [User::class, 'edit']);
+$routes->post('/setting/user/update/(:hash)', [User::class, 'update']);
+$routes->post('/setting/user/delete/(:hash)', [User::class, 'destroy']);

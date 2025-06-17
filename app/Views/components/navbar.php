@@ -11,7 +11,7 @@
         <li>
             <div class="user-panel d-flex mr-3">
                 <div class="image">
-                    <img src="/assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    <img src="/assets/img/default-profile.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
                     <a href="#" class="d-block text-dark">Alexander Pierce</a>

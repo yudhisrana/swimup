@@ -16,7 +16,7 @@ class User
     public function getData()
     {
         try {
-            $data = $this->userModel->findDataWithRelation();
+            $data = $this->userModel->findAll();
             if (empty($data)) {
                 return [
                     'success' => true,
@@ -69,14 +69,6 @@ class User
         $id = Uuid::uuid4()->toString();
         $hasPassword = password_hash($data['password'], PASSWORD_DEFAULT);
 
-        $img = $data['image'];
-        if (!empty($img) && $img->isValid()) {
-            $imgName = $img->getRandomName();
-            $data['image']->move(FCPATH . 'assets/img/user', $imgName);
-        } else {
-            $imgName = 'default-profile.png';
-        }
-
         $newData = [
             'id'       => $id,
             'name'     => ucwords(strtolower($data['name'])),
@@ -85,12 +77,15 @@ class User
             'email'    => $data['email'],
             'phone'    => $data['phone'],
             'address'  => $data['address'],
-            'image'    => $imgName,
-            'role_id'  => $data['role_id'],
+            'image'    => $data['image'],
+            'role_id'  => $data['role'],
         ];
 
         try {
             if (!$this->userModel->insert($newData)) {
+                if ($data['image'] !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $data['image'])) {
+                    unlink(FCPATH . 'assets/img/user/' . $data['image']);
+                }
                 return [
                     'success' => false,
                     'message' => 'Gagal menyimpan data user'
@@ -121,12 +116,13 @@ class User
         }
 
         $newData = [
-            'name'       => ucwords(strtolower($data['name'])),
-            'username'   => $data['username'],
-            'email'      => $data['email'],
-            'phone'      => $data['phone'],
-            'address'    => $data['address'],
-            'role_id'    => $data['role_id'],
+            'name'     => ucwords(strtolower($data['name'])),
+            'username' => $data['username'],
+            'email'    => $data['email'],
+            'phone'    => $data['phone'],
+            'address'  => $data['address'],
+            'image'    => $data['image'],
+            'role_id'  => $data['role'],
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
@@ -136,25 +132,19 @@ class User
             unset($newData['password']);
         }
 
-        if (!empty($data['image']) && $data['image']->isValid()) {
-            $imageName = $data['image']->getRandomName();
-            $data['image']->move(FCPATH . 'assets/img/user', $imageName);
-            $newData['image'] = $imageName;
-
-            $oldImg = $data['old_image'];
-            if ($oldImg !== 'default-profile.png') {
-                unlink(FCPATH . 'assets/img/user/' . $oldImg);
-            }
-        } else {
-            unset($newData['image']);
-        }
-
         try {
             if (!$this->userModel->update($id, $newData)) {
+                if ($data['image'] !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $data['image'])) {
+                    unlink(FCPATH . 'assets/img/user/' . $data['image']);
+                }
                 return [
                     'success' => false,
                     'message' => 'Gagal update data user',
                 ];
+            }
+
+            if ($data['old_img'] !== 'default-profile.png') {
+                unlink(FCPATH . 'assets/img/user/' . $data['old_img']);
             }
 
             return [
@@ -172,7 +162,7 @@ class User
 
     public function deleteData($id)
     {
-        $existing = $this->userModel->where('id', $id);
+        $existing = $this->userModel->where('id', $id)->first();
         if (!$existing) {
             return [
                 'success' => false,
@@ -189,6 +179,11 @@ class User
                     'message' => 'Gagal hapus data kategori umur'
                 ];
             }
+
+            if ($existing->image !== 'default-profile.png' && file_exists(FCPATH . 'assets/img/user/' . $existing->image)) {
+                unlink(FCPATH . 'assets/img/user/' . $existing->image);
+            }
+
 
             return [
                 'success' => true,

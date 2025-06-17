@@ -54,9 +54,9 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-header">USER SETTING</li>
+                <li class="nav-header">SETTING</li>
                 <li class="nav-item">
-                    <a href="/menu/event" class="nav-link <?= $page == 'event' ? 'active' : '' ?>">
+                    <a href="/setting/user" class="nav-link <?= $page == 'user' ? 'active' : '' ?>">
                         <i class="nav-icon fas fa-users-cog"></i>
                         <p>
                             User
