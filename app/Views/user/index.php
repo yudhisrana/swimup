@@ -76,7 +76,7 @@
                                             <td style="white-space: normal !important; word-wrap: break-word; min-width: 200px;">
                                                 <?= $value->address; ?>
                                             </td>
-                                            <td><?= $value->role_id == '2' ? 'Admin' : 'Panitia'; ?></td>
+                                            <td><?= $value->role_name; ?></td>
                                             <td>
                                                 <?= $value->status == '1'
                                                     ? '<span class="badge badge-success">Aktif</span>'
@@ -86,7 +86,7 @@
                                             <td><?= $value->created_at ? date('d-m-Y H:i:s', strtotime($value->created_at)) : '-' ?></td>
                                             <td><?= $value->updated_at ? date('d-m-Y H:i:s', strtotime($value->updated_at)) : '-' ?></td>
                                             <td>
-                                                <a href="<?= '/setting/user/edit/' . $value->id ?>" type="button" class="btn btn-warning">
+                                                <a type="button" href="<?= '/setting/user/edit/' . $value->id ?>" class="btn btn-warning">
                                                     <i class="nav-icon fas fa-edit"></i>
                                                 </a>
                                                 <button type="button" class="btn btn-danger btn-delete"

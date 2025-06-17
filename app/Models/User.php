@@ -20,4 +20,15 @@ class User extends Model
     protected $createdField  = 'created_at';
     protected $updatedField  = '';
     protected $deletedField  = '';
+
+    public function findAllDataWithRelation()
+    {
+        return $this->select('
+            tbl_user.*,
+            tbl_role.name AS role_name
+        ')
+            ->join('tbl_role', 'tbl_role.id = tbl_user.role_id')
+            ->where('tbl_user.name !=', 'Administrator')
+            ->findAll();
+    }
 }

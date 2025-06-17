@@ -16,7 +16,7 @@ class User
     public function getData()
     {
         try {
-            $data = $this->userModel->findAll();
+            $data = $this->userModel->findAllDataWithRelation();
             if (empty($data)) {
                 return [
                     'success' => true,
