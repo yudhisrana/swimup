@@ -129,3 +129,9 @@ _modules/*
 # Session Files
 #-------------------------
 public/ci_session
+
+#-------------------------
+# Image Upload Files
+#-------------------------
+public/assets/img/user
+public/assets/img/registration
