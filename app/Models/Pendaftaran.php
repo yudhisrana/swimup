@@ -48,4 +48,9 @@ class Pendaftaran extends Model
             ->where('status', 'Disetujui')
             ->countAllResults();
     }
+
+    public function countAllRegister()
+    {
+        return $this->countAllResults();
+    }
 }

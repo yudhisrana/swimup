@@ -49,4 +49,19 @@ class Event extends Model
             ->where('tbl_event.id', $id)
             ->first();
     }
+
+    public function countEventProgress()
+    {
+        return $this->where('status', 'Berjalan')->countAllResults();
+    }
+
+    public function countEventDone()
+    {
+        return $this->where('status', 'Selesai')->countAllResults();
+    }
+
+    public function countEventRejected()
+    {
+        return $this->where('status', 'Gagal')->countAllResults();
+    }
 }
