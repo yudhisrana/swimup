@@ -73,13 +73,6 @@
                                                 <a href="<?= '/menu/event/show/' . $value->id ?>" type="button" class="btn btn-primary">
                                                     <i class="nav-icon fas fa-eye"></i>
                                                 </a>
-                                                <a href="<?= '/menu/event/edit/' . $value->id ?>" type="button" class="btn btn-warning">
-                                                    <i class="nav-icon fas fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-danger btn-delete"
-                                                    data-id="<?= $value->id; ?>">
-                                                    <i class="nav-icon fas fa-trash-alt"></i>
-                                                </button>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -149,59 +142,6 @@
                     },
                 ]
             })
-    });
-
-    // sweet alert delete
-    $(function() {
-        $('.btn-delete').click(function() {
-            const baseUrl = '<?= base_url(); ?>'
-            const csrfToken = '<?= csrf_token(); ?>'
-            const csrfHash = '<?= csrf_hash(); ?>'
-
-            const id = $(this).data('id')
-            url = baseUrl + 'menu/event/delete/' + id;
-            method = 'POST';
-
-            Swal.fire({
-                title: "Yakin hapus data?",
-                text: "Data yang dihapus tidak dapat dikembalikan!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#C82333",
-                confirmButtonText: "Ya, hapus!",
-                cancelButtonColor: "#5A6268",
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: url,
-                        method: method,
-                        data: {
-                            [csrfToken]: csrfHash,
-                        },
-                        success: function(res) {
-                            if (res.success) {
-                                Swal.fire({
-                                    title: "Dihapus",
-                                    text: res.message,
-                                    icon: "success"
-                                }).then(() => {
-                                    location.reload();
-                                })
-                            }
-                        },
-                        error: function(xhr) {
-                            const errMsg = xhr.responseJSON.message;
-                            Swal.fire({
-                                title: 'Opsss..',
-                                text: errMsg,
-                                icon: "error"
-                            })
-                        }
-                    })
-                }
-            });
-        });
     });
 
     <?php if (session()->getFlashdata('success')) { ?>

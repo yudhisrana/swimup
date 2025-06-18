@@ -155,6 +155,18 @@ class Pendaftaran
             ];
         }
 
+        $dataEvent = $this->eventModel->where('id', $existing->event_id)->first();
+        if ($data['status'] == 'Disetujui') {
+            $approvedCount = $this->pendaftaranModel->countApprovedByEvent($existing->event_id);
+            if ($approvedCount >= $dataEvent->max_participant) {
+                return [
+                    'success' => false,
+                    'code'    => 400,
+                    'message' => 'Kuota peserta untuk event ini sudah penuh. Tidak bisa menyetujui peserta lagi.'
+                ];
+            }
+        }
+
         $newData = [
             'status'     => $data['status'],
             'updated_at' => date('Y-m-d H:i:s'),

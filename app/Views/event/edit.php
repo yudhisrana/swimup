@@ -20,7 +20,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
                                 <h3 class="card-title"><?= $form_name; ?></h3>
-                                <a href="/menu/event" type="button" class="btn btn-secondary">
+                                <a href="<?= '/menu/event/show/' . $event->id; ?>" type="button" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left mr-1"></i>
                                     Kembali
                                 </a>

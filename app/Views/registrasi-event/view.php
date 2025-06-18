@@ -78,7 +78,7 @@
                         <div class="card-footer bg-white">
                             <!-- Tombol Disetujui dan Ditolak -->
                             <div class="d-flex align-items-center justify-content-end">
-                                <button class="btn btn-info mr-2 btn-modal"
+                                <button class="btn btn-info btn-modal"
                                     data-id="<?= $peserta->id; ?>"
                                     data-mode="update"
                                     data-status="Disetujui">
@@ -86,7 +86,7 @@
                                     Disetujui
                                 </button>
 
-                                <button class="btn btn-danger mr-2 btn-modal"
+                                <button class="btn btn-danger ml-2 btn-modal"
                                     data-id="<?= $peserta->id; ?>"
                                     data-mode="update"
                                     data-status="Ditolak">
@@ -95,7 +95,7 @@
                                 </button>
 
                                 <?php if (session()->get('role_id') != 3) { ?>
-                                    <button class="btn btn-danger mr-2 btn-modal"
+                                    <button class="btn btn-danger ml-2 btn-modal"
                                         data-id="<?= $peserta->id; ?>"
                                         data-mode="hapus">
                                         <i class="fas fa-trash-alt mr-1"></i>

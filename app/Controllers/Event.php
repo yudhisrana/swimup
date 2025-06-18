@@ -163,7 +163,7 @@ class Event extends BaseController
             return redirect()->back()->withInput()->with('error', $result['message']);
         }
 
-        return redirect()->to('/menu/event')->with('success', $result['message']);
+        return redirect()->to('/menu/event/show/' . $id)->with('success', $result['message']);
     }
 
     public function destroy($id)
