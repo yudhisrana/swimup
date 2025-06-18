@@ -55,6 +55,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="/menu/registrasi-event" class="nav-link <?= $page == 'registrasi-event' ? 'active' : '' ?>">
+                        <i class="nav-icon fas fa-user-plus"></i>
+                        <p>
+                            Registrasi Event
+                        </p>
+                    </a>
+                </li>
                 <?php if ($user['role_id'] == 2) { ?>
                     <li class="nav-header">SETTING</li>
                     <li class="nav-item">

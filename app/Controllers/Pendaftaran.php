@@ -21,7 +21,31 @@ class Pendaftaran extends BaseController
 
     public function index()
     {
-        //
+        $dataPendaftaran = $this->pendaftaranService->getData();
+        $pendaftaran = $dataPendaftaran['success'] ? $dataPendaftaran['data'] : [];
+        $data = [
+            'page'          => 'registrasi-event',
+            'title'         => 'SwimUp - Registrasi Event',
+            'table_name'    => 'Data Registrasi Event',
+            'pendaftaran'   => $pendaftaran,
+        ];
+        return view('registrasi-event/index', $data);
+    }
+
+    public function show($id)
+    {
+        $result = $this->pendaftaranService->getById($id);
+        if (!$result['success']) {
+            return redirect()->back()->with('error', $result['message']);
+        }
+
+        $data = [
+            'page'          => 'registrasi-event',
+            'title'         => 'SwimUp - Registrasi Event',
+            'card_name'     => 'Data Peserta',
+            'peserta'       => $result['data'],
+        ];
+        return view('registrasi-event/view', $data);
     }
 
     public function showRegistrationPublic($slug)
@@ -41,7 +65,7 @@ class Pendaftaran extends BaseController
             'join_event'     => $dataEvent->status == 'Berjalan' && $count < $dataEvent->max_participant,
         ];
 
-        return view('pendaftaran/publik/event', $data);
+        return view('registrasi-event/publik/pendaftaran-event', $data);
     }
 
     public function storePublic($evenId)
@@ -79,18 +103,35 @@ class Pendaftaran extends BaseController
         return redirect()->back()->with('success', $result['message']);
     }
 
-    public function edit()
+    public function update($id)
     {
-        //
+        $data = [
+            'status' => $this->request->getPost('status'),
+        ];
+
+        $result = $this->pendaftaranService->updateData($id, $data);
+        if (!$result['success']) {
+            return $this->response
+                ->setStatusCode($result['code'])
+                ->setJSON($result);
+        }
+
+        return $this->response
+            ->setStatusCode($result['code'])
+            ->setJSON($result);
     }
 
-    public function update()
+    public function destroy($id)
     {
-        //
-    }
+        $result = $this->pendaftaranService->deleteData($id);
+        if (!$result['success']) {
+            return $this->response
+                ->setStatusCode($result['code'])
+                ->setJSON($result);
+        }
 
-    public function destroy()
-    {
-        //
+        return $this->response
+            ->setStatusCode($result['code'])
+            ->setJSON($result);
     }
 }

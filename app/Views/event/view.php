@@ -24,7 +24,7 @@
 
                                 <dt class="col-sm-3">Link Event</dt>
                                 <dd class="col-sm-9">
-                                    : <a href="<?= base_url('event/' . $event->slug) ?>" target="_blank"><?= base_url('event/' . $event->slug) ?></a>
+                                    : <a href="<?= base_url('regristrasi/event/' . $event->slug) ?>" target="_blank"><?= base_url('regristrasi/event/' . $event->slug) ?></a>
                                 </dd>
 
                                 <dt class="col-sm-3">Kategori Umur</dt>

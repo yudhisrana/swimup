@@ -16,6 +16,57 @@ class Pendaftaran
         $this->eventModel = new Event();
     }
 
+    public function getData()
+    {
+        try {
+            $data = $this->pendaftaranModel->findAllDataWithRelation();
+            if (empty($data)) {
+                return [
+                    'success' => true,
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'data'    => [],
+            ];
+        }
+    }
+
+    public function getById($id)
+    {
+        try {
+            $data = $this->pendaftaranModel->findDataWithRelationById($id);
+            if (!$data) {
+                return [
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                    'data'    => [],
+                ];
+            }
+
+            return [
+                'success' => true,
+                'message' => 'Data ditemukan',
+                'data'    => $data,
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+                'data'    => [],
+            ];
+        }
+    }
+
     public function getBySlug($slug)
     {
         try {
@@ -88,6 +139,97 @@ class Pendaftaran
             log_message('error', $th->getMessage());
             return [
                 'success' => false,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+            ];
+        }
+    }
+
+    public function updateData($id, $data)
+    {
+        $existing = $this->pendaftaranModel->where('id', $id)->first();
+        if (!$existing) {
+            return [
+                'success' => false,
+                'code'    => 404,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
+
+        $newData = [
+            'status'     => $data['status'],
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        unset($newData['event_id']);
+        unset($newData['nama_peserta']);
+        unset($newData['tanggal_lahir']);
+        unset($newData['gender']);
+        unset($newData['email']);
+        unset($newData['phone']);
+        unset($newData['address']);
+        unset($newData['image']);
+
+        try {
+            if (!$this->pendaftaranModel->update($id, $data)) {
+                return [
+                    'success' => false,
+                    'code'    => 500,
+                    'message' => 'Gagal update data peserta'
+                ];
+            }
+
+            return [
+                'success' => true,
+                'code'    => 200,
+                'message' => 'Berhasil update data peserta'
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'code'    => 500,
+                'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
+            ];
+        }
+    }
+
+    public function deleteData($id)
+    {
+        $existing = $this->pendaftaranModel->where('id', $id)->first();
+        if (!$existing) {
+            return [
+                'success' => false,
+                'code'    => 404,
+                'message' => 'Data tidak ditemukan'
+            ];
+        }
+
+        try {
+            if (!$this->pendaftaranModel->delete($id)) {
+                return [
+                    'success' => false,
+                    'code'    => 500,
+                    'message' => 'Gagal hapus data peserta'
+                ];
+            }
+
+            if (!empty($existing->image)) {
+                $imgPath = FCPATH . 'assets/img/registration/' . $existing->image;
+                if (file_exists($imgPath)) {
+                    unlink($imgPath);
+                }
+            }
+
+            return [
+                'success' => true,
+                'code'    => 200,
+                'message' => 'Berhasil hapus data peserta'
+            ];
+        } catch (\Throwable $th) {
+            log_message('error', $th->getMessage());
+            return [
+                'success' => false,
+                'code'    => 500,
                 'message' => 'Terjadi kesalahan : ' . $th->getMessage(),
             ];
         }

@@ -64,6 +64,12 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     $routes->post('/menu/event/update/(:hash)', [Event::class, 'update']);
     $routes->post('/menu/event/delete/(:hash)', [Event::class, 'destroy']);
 
+    // registrasi event
+    $routes->get('/menu/registrasi-event', [Pendaftaran::class, 'index']);
+    $routes->get('/menu/registrasi-event/show/(:hash)', [Pendaftaran::class, 'show']);
+    $routes->post('/menu/registrasi-event/update/(:hash)', [Pendaftaran::class, 'update']);
+    $routes->post('/menu/registrasi-event/delete/(:hash)', [Pendaftaran::class, 'destroy']);
+
     $routes->group('', ['filter' => 'admin'], function ($routes) {
         // user
         $routes->get('/setting/user', [User::class, 'index']);
@@ -75,6 +81,6 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
     });
 });
 
-// pendaftaran publik
-$routes->get('/event/(:segment)', [Pendaftaran::class, 'showRegistrationPublic']);
-$routes->post('/event/public/store/(:hash)', [Pendaftaran::class, 'storePublic']);
+// registrasi event publik
+$routes->get('/regristrasi/event/(:segment)', [Pendaftaran::class, 'showRegistrationPublic']);
+$routes->post('/regristrasi/event/store/(:hash)', [Pendaftaran::class, 'storePublic']);

@@ -1,5 +1,12 @@
 <?= $this->extend('layout/public'); ?>
 
+<?= $this->section('style'); ?>
+<!-- SweetAlert2 -->
+<link
+    rel="stylesheet"
+    href="/assets/plugins/sweetalert2/sweetalert2.min.css" />
+<?= $this->endSection(); ?>
+
 <?= $this->section('content'); ?>
 <div class="d-flex justify-content-center align-items-center min-vh-100">
     <div class="container w-50">
@@ -34,7 +41,7 @@
                 <?php } else { ?>
                     <!-- Form Pendaftaran -->
                     <?php $validation = session()->getFlashdata('validation') ?: [] ?>
-                    <form action="<?= '/event/public/store/' . $event->id; ?>" method="post" enctype="multipart/form-data">
+                    <form id="form-registration" action="<?= '/regristrasi/event/store/' . $event->id; ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field(); ?>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -103,7 +110,7 @@
                                 <?= $validation['address'] ?? '' ?>
                             </span>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Kirim Pendaftaran</button>
+                        <button type="submit" class="btn btn-info btn-block">Kirim Pendaftaran</button>
                     </form>
                 <?php } ?>
             </div>
@@ -114,6 +121,9 @@
 
 
 <?= $this->section('script'); ?>
+<!-- SweetAlert2 -->
+<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
 <script>
     //Date picker
     $('#tanggal_lahir').datetimepicker({
@@ -128,6 +138,28 @@
         const file = image.files[0];
         file ? label.text(file.name) : label.text('Pilih Gambar');
     }
+
+    // popup confirmation
+    $(function() {
+        $('#form-registration').submit(function(e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Yakin ingin mendaftar?',
+                text: "Pastikan data yang kamu isi sudah benar.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#17a2b8',
+                cancelButtonColor: '#aaa',
+                confirmButtonText: 'Ya, Kirim!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.target.submit();
+                }
+            });
+        });
+    });
 
     <?php if (session()->getFlashdata('success')) { ?>
         Swal.fire({

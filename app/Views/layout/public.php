@@ -25,6 +25,9 @@
         href="/assets/plugins/sweetalert2/sweetalert2.min.css" />
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/css/adminlte.min.css" />
+
+    <!-- additional style -->
+    <?= $this->renderSection('style'); ?>
 </head>
 
 <body class="hold-transition">
@@ -43,6 +46,7 @@
     <!-- AdminLTE App -->
     <script src="/assets/js/adminlte.min.js"></script>
 
+    <!-- additional script -->
     <?= $this->renderSection('script'); ?>
 </body>
 

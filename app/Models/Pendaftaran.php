@@ -12,7 +12,7 @@ class Pendaftaran extends Model
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'event_id', 'nama_peserta', 'tanggal_lahir', 'gender', 'email', 'phone', 'address', 'status', 'created_at', 'updated_at'];
+    protected $allowedFields    = ['id', 'event_id', 'nama_peserta', 'tanggal_lahir', 'gender', 'email', 'phone', 'address', 'image', 'status', 'created_at', 'updated_at'];
 
     // Dates
     protected $useTimestamps = true;
@@ -29,6 +29,17 @@ class Pendaftaran extends Model
         ')
             ->join('tbl_event', 'tbl_event.id = tbl_pendaftaran.event_id')
             ->findAll();
+    }
+
+    public function findDataWithRelationById($id)
+    {
+        return $this->select('
+            tbl_pendaftaran.*,
+            tbl_event.name AS event_name
+        ')
+            ->join('tbl_event', 'tbl_event.id = tbl_pendaftaran.event_id')
+            ->where('tbl_pendaftaran.id', $id)
+            ->first();
     }
 
     public function countApprovedByEvent($eventId)
