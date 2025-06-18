@@ -99,7 +99,7 @@
                                         <?= $validation['image'] ?? '' ?>
                                     </span>
                                 </div>
-                                <div>
+                                <div class="d-flex align-items-center justify-content-end">
                                     <button type="submit" id="submitModal" class="btn btn-info">Update</button>
                                 </div>
                             </form>

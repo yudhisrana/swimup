@@ -113,7 +113,7 @@
                                         <option value="Gagal" <?= old('status', $event->status) == 'Gagal' ? 'selected' : '' ?>>Gagal</option>
                                     </select>
                                 </div>
-                                <div>
+                                <div class="d-flex align-items-center justify-content-end">
                                     <button type="submit" id="submitModal" class="btn btn-info">Update</button>
                                 </div>
                             </form>
