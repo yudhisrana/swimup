@@ -51,7 +51,7 @@ class User
             'address' => [
                 'rules' => 'permit_empty|min_length[10]',
                 'errors' => [
-                    'regex_match' => 'Field alamat minimal 10 karakter',
+                    'min_length' => 'Field alamat minimal 10 karakter',
                 ]
             ],
             'image' => [
@@ -111,7 +111,7 @@ class User
             'address' => [
                 'rules' => 'permit_empty|min_length[10]',
                 'errors' => [
-                    'regex_match' => 'Field alamat minimal 10 karakter',
+                    'min_length' => 'Field alamat minimal 10 karakter',
                 ]
             ],
             'image' => [

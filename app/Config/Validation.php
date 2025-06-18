@@ -2,9 +2,11 @@
 
 namespace Config;
 
+use App\Validation\Event;
 use App\Validation\GayaRenang;
 use App\Validation\JarakRenang;
 use App\Validation\KategoriUmur;
+use App\Validation\Pendaftaran;
 use App\Validation\User;
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\StrictRules\CreditCardRules;
@@ -33,6 +35,8 @@ class Validation extends BaseConfig
         KategoriUmur::class,
         JarakRenang::class,
         User::class,
+        Event::class,
+        Pendaftaran::class,
     ];
 
     /**

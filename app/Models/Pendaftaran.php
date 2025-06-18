@@ -30,4 +30,11 @@ class Pendaftaran extends Model
             ->join('tbl_event', 'tbl_event.id = tbl_pendaftaran.event_id')
             ->findAll();
     }
+
+    public function countApprovedByEvent($eventId)
+    {
+        return $this->where('event_id', $eventId)
+            ->where('status', 'Disetujui')
+            ->countAllResults();
+    }
 }

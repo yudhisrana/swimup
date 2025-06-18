@@ -119,12 +119,12 @@
 <?= $this->endSection(); ?>
 
 <?= $this->section('script'); ?>
-<!-- SweetAlert2 -->
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- InputMask -->
 <script src="/assets/plugins/moment/moment.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="/assets/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
 <script>
     //Date and time picker

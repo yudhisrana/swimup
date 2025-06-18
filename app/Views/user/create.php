@@ -93,10 +93,10 @@
                                     <div class="custom-file">
                                         <label class="custom-file-label" for="image">Pilih Gambar</label>
                                         <input type="file" class="custom-file-input <?= array_key_exists('image', $validation) ? 'is-invalid' : '' ?>" id="image" name="image" onchange="imgPreview()">
+                                        <span id="image-error" class="error invalid-feedback">
+                                            <?= $validation['image'] ?? '' ?>
+                                        </span>
                                     </div>
-                                    <span id="image-error" class="error invalid-feedback">
-                                        <?= $validation['image'] ?? '' ?>
-                                    </span>
                                 </div>
                                 <div>
                                     <button type="submit" id="submitModal" class="btn btn-info">Simpan</button>

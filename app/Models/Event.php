@@ -35,7 +35,7 @@ class Event extends Model
             ->findAll();
     }
 
-    public function findAllDataWithRelationById($id)
+    public function findDataWithRelationById($id)
     {
         return $this->select('
             tbl_event.*,

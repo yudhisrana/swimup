@@ -6,6 +6,7 @@ use App\Controllers\Event;
 use App\Controllers\GayaRenang;
 use App\Controllers\JarakRenang;
 use App\Controllers\KategoriUmur;
+use App\Controllers\Pendaftaran;
 use App\Controllers\User;
 use CodeIgniter\Router\RouteCollection;
 
@@ -73,3 +74,7 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
         $routes->post('/setting/user/delete/(:hash)', [User::class, 'destroy']);
     });
 });
+
+// pendaftaran publik
+$routes->get('/event/(:segment)', [Pendaftaran::class, 'showRegistrationPublic']);
+$routes->post('/event/public/store/(:hash)', [Pendaftaran::class, 'storePublic']);

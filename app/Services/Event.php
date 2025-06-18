@@ -155,7 +155,7 @@ class Event
     public function getById($id)
     {
         try {
-            $data = $this->eventModel->findAllDataWithRelationById($id);
+            $data = $this->eventModel->findDataWithRelationById($id);
             if (!$data) {
                 return [
                     'success' => false,
