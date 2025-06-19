@@ -38,15 +38,3 @@
     </div>
 </div>
 <?= $this->endSection(); ?>
-
-<?= $this->section('script'); ?>
-<script>
-    <?php if (session()->getFlashdata('error')) { ?>
-        Swal.fire({
-            icon: 'error',
-            title: 'Opss..',
-            text: '<?= session()->getFlashdata('error') ?>'
-        });
-    <?php } ?>
-</script>
-<?= $this->endSection();

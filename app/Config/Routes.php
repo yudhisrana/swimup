@@ -19,13 +19,16 @@ $routes->get('/login', [Auth::class, 'index']);
 $routes->post('/login/attempt', [Auth::class, 'attemptLogin']);
 $routes->post('/logout', [Auth::class, 'attemptLogout']);
 
+// registrasi event publik
+$routes->get('/regristrasi/event/(:segment)', [Pendaftaran::class, 'showRegistrationPublic']);
+$routes->post('/regristrasi/event/store/(:hash)', [Pendaftaran::class, 'storePublic']);
+
 $routes->group('', ['filter' => 'auth'], function ($routes) {
     //  index
     $routes->get('/', function () {
-        if (!session()->get('logged_in')) {
-            return redirect()->to('/login');
+        if (session()->get('logged_in')) {
+            return redirect()->to('/dashboard');
         }
-        return redirect()->to('/dashboard');
     });
 
     // dashboard
@@ -80,7 +83,3 @@ $routes->group('', ['filter' => 'auth'], function ($routes) {
         $routes->post('/setting/user/delete/(:hash)', [User::class, 'destroy']);
     });
 });
-
-// registrasi event publik
-$routes->get('/regristrasi/event/(:segment)', [Pendaftaran::class, 'showRegistrationPublic']);
-$routes->post('/regristrasi/event/store/(:hash)', [Pendaftaran::class, 'storePublic']);

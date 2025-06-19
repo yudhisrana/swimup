@@ -17,10 +17,6 @@
     <link
         rel="stylesheet"
         href="/assets/plugins/fontawesome-free/css/all.min.css" />
-    <!-- SweetAlert2 -->
-    <link
-        rel="stylesheet"
-        href="/assets/plugins/sweetalert2/sweetalert2.min.css" />
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/css/adminlte.min.css" />
 </head>
@@ -30,14 +26,10 @@
 
     <!-- jQuery -->
     <script src="/assets/plugins/jquery/jquery.min.js"></script>
-    <!-- SweetAlert2 -->
-    <script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="/assets/js/adminlte.min.js"></script>
-
-    <?= $this->renderSection('script'); ?>
 </body>
 
 </html>
